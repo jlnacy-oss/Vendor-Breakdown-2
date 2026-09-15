@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI — Vendor Profile</title>
+<style>
+
+  :root{
+    --bg:#EFF0F3; --panel:#FFFFFF; --panel-2:#F5F6F8; --line:#DCDFE4;
+    --ink:#14161C; --ink-2:#3A3F4B; --ink-3:#5B6270;
+    --sand:#A5702B; --sand-dim:#C79256; --steel:#2B6684;
+    --green:#1F7A4D; --green-bg:#E6F5EC; --red:#B23A2E; --red-bg:#FBEAE8; --amber:#8A5B10;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px 60px;}
+
+  header.hero{
+    background:linear-gradient(180deg,#F5F6F8,#EFF0F3);
+    border-bottom:1px solid var(--line);
+    padding:40px 24px 28px;
+  }
+  .hero-inner{max-width:1080px; margin:0 auto;}
+  .kicker{
+    font-size:12.5px; color:var(--sand); letter-spacing:.02em; font-weight:600;
+    display:flex; gap:8px; align-items:center; margin-bottom:10px;
+  }
+  .kicker .dot{width:5px; height:5px; border-radius:50%; background:var(--sand);}
+  h1{font-size:34px; margin:0 0 8px; font-weight:700; letter-spacing:-0.01em; color:var(--ink);}
+  .tagline{color:var(--ink-2); font-size:15px; max-width:640px; margin:0;}
+  .tagline a{color:var(--steel); text-decoration:none;}
+
+  .kpi-row{
+    display:grid; grid-template-columns:repeat(7,1fr); gap:10px;
+    margin-top:26px;
+  }
+  .kpi{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 14px; text-align:left;}
+  .kpi .num{font-size:20px; font-weight:700; color:var(--ink);}
+  .kpi .lbl{font-size:11px; color:var(--ink-3); margin-top:4px;}
+
+  section{padding:38px 0; border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .sec-head{display:flex; align-items:baseline; gap:10px; margin-bottom:18px;}
+  .sec-num{color:var(--sand); font-weight:700; font-size:13px;}
+  h2{font-size:19px; margin:0; font-weight:700; color:var(--ink);}
+  .sec-note{color:var(--ink-3); font-size:12.5px; margin:-8px 0 18px;}
+
+  /* snapshot */
+  .snap-grid{display:grid; grid-template-columns:1.35fr 1fr; gap:32px;}
+  .snap-grid p{font-size:14px; color:var(--ink-2); margin:0 0 14px;}
+  .snap-grid p b{color:var(--ink); font-weight:600;}
+  .side-block{margin-bottom:18px;}
+  .side-block h4{font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-3); margin:0 0 8px; font-weight:600;}
+  .chip-row{display:flex; flex-wrap:wrap; gap:6px;}
+  .chip{
+    font-size:12.5px; background:var(--panel); border:1px solid var(--line);
+    color:var(--ink-2); padding:5px 10px; border-radius:6px;
+  }
+
+  /* ratings */
+  .rating-cards{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;}
+  .rcard{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 20px;}
+  .rcard .src{font-size:12px; color:var(--ink-3); margin-bottom:10px;}
+  .rcard .big{font-size:28px; font-weight:700; display:flex; align-items:baseline; gap:8px; color:var(--ink);}
+  .rcard .big small{font-size:13px; color:var(--ink-3); font-weight:400;}
+  .meter{height:8px; background:var(--panel-2); border-radius:4px; margin:12px 0 10px; overflow:hidden;}
+  .meter > div{height:100%; background:var(--sand); border-radius:4px;}
+  .stat-line{display:flex; justify-content:space-between; font-size:12.5px; color:var(--ink-2); padding:4px 0; border-top:1px solid var(--line);}
+  .grade-row{display:flex; gap:8px; margin-top:12px;}
+  .grade{
+    flex:1; text-align:center; border-radius:8px; padding:10px 6px; border:1px solid var(--line); background:var(--panel-2);
+  }
+  .grade .letter{font-size:18px; font-weight:700; color:var(--sand);}
+  .grade.weak .letter{color:var(--red);}
+  .grade .cap{font-size:10.5px; color:var(--ink-3); margin-top:3px;}
+  .qual-note{font-size:12.5px; color:var(--ink-2); background:var(--panel-2); border-left:2px solid var(--sand); padding:10px 12px; border-radius:0 6px 6px 0;}
+
+  /* use cases */
+  .uc-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  a.uc-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 18px;
+    display:block; text-decoration:none; color:inherit; transition:border-color .15s, background .15s;
+  }
+  a.uc-card:hover{border-color:var(--sand-dim); background:var(--panel-2);}
+  a.uc-card:hover .uc-deploy{color:var(--sand);}
+  .uc-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;}
+  .uc-sector{font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--sand); font-weight:700;}
+  .uc-status-group{display:flex; align-items:center; gap:6px;}
+  .uc-status{font-size:10.5px; background:var(--green-bg); color:var(--green); padding:2px 8px; border-radius:20px; font-weight:600;}
+  .uc-link{font-size:11px; color:var(--ink-3);}
+  .uc-deploy{font-size:13.5px; color:var(--ink); font-weight:600; margin-bottom:6px; transition:color .15s;}
+  .uc-metric{font-size:12.5px; color:var(--ink-2);}
+  .uc-src{font-size:11px; color:var(--ink-3); margin-top:8px; padding-top:8px; border-top:1px solid var(--line);}
+
+  /* competitive */
+  .comp-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .comp-table th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 10px; font-weight:600;
+  }
+  .comp-table td{padding:10px 10px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+  .comp-table td.name{color:var(--ink); font-weight:600;}
+  .tag-direct{color:var(--sand); font-size:11px; font-weight:700;}
+  .tag-adjacent{color:var(--steel); font-size:11px; font-weight:700;}
+  .position-note{font-size:13.5px; color:var(--ink-2); margin-top:16px; padding-top:16px; border-top:1px solid var(--line);}
+  .position-note b{color:var(--ink);}
+  .subhead{font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-3); font-weight:600; margin:28px 0 12px;}
+  .scale-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .scale-table th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 10px; font-weight:600;}
+  .scale-table td{padding:10px 10px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+  .scale-table td.name{color:var(--ink); font-weight:600;}
+  .bar-cell{display:flex; align-items:center; gap:8px;}
+  .bar-track{flex:1; height:6px; background:var(--panel-2); border-radius:3px; overflow:hidden; max-width:120px; border:1px solid var(--line);}
+  .bar-fill{height:100%; background:var(--steel);}
+  .bar-fill.sand-fill{background:var(--sand);}
+  .callout{
+    background:var(--panel-2); border:1px solid var(--line); border-left:2px solid var(--steel);
+    border-radius:0 8px 8px 0; padding:14px 16px; font-size:13px; color:var(--ink-2); margin-top:18px;
+  }
+  .callout b{color:var(--ink);}
+
+  /* sentiment */
+  .sent-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .sent-col{border-radius:10px; padding:18px 20px; border:1px solid var(--line);}
+  .sent-col.bull{background:var(--green-bg);}
+  .sent-col.bear{background:var(--red-bg);}
+  .sent-head{font-size:13px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;}
+  .sent-col.bull .sent-head{color:var(--green);}
+  .sent-col.bear .sent-head{color:var(--red);}
+  .sent-col ul{margin:0; padding-left:16px; font-size:13px; color:var(--ink-2);}
+  .sent-col li{margin-bottom:8px;}
+  .chart-box{margin-top:20px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 20px;}
+  .chart-box .chart-title{font-size:12.5px; color:var(--ink-3); margin-bottom:12px;}
+
+  footer{padding:26px 0 10px; font-size:11.5px; color:var(--ink-3); line-height:1.6;}
+  footer b{color:var(--ink-2);}
+
+  @media (max-width:720px){
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+    .snap-grid, .rating-cards, .uc-grid, .sent-grid{grid-template-columns:1fr;}
+    h1{font-size:26px;}
+  }
+
+/* --- market hub additions --- */
+.topnav{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+.back-link{font-size:12.5px; color:var(--steel); text-decoration:none; font-weight:600;}
+.back-link:hover{text-decoration:underline;}
+.btn{
+  display:inline-block; font-size:12.5px; font-weight:600; color:#fff; background:var(--ink);
+  padding:8px 14px; border-radius:8px; text-decoration:none; border:1px solid var(--ink);
+}
+.btn:hover{background:var(--sand); border-color:var(--sand);}
+.btn.secondary{background:var(--panel); color:var(--ink); border:1px solid var(--line);}
+.btn.secondary:hover{background:var(--panel-2); border-color:var(--sand-dim); color:var(--sand);}
+.btn-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;}
+
+.vendor-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.vcard{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column;}
+.vcard-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;}
+.vcard-name{font-size:16px; font-weight:700; color:var(--ink); text-decoration:none;}
+.vcard-name:hover{color:var(--sand);}
+.vcard-cat{font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--sand); font-weight:700; margin-bottom:6px;}
+.vcard-desc{font-size:12.5px; color:var(--ink-2); flex:1; margin-bottom:12px;}
+.vcard-kpi{background:var(--panel-2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:12px;}
+.vcard-kpi .k-num{font-size:15px; font-weight:700; color:var(--ink);}
+.vcard-kpi .k-lbl{font-size:10.5px; color:var(--ink-3);}
+.vcard-actions{display:flex; gap:6px;}
+.vcard-actions a{flex:1; text-align:center; font-size:11.5px; padding:7px 8px;}
+
+.matrix-table{width:100%; border-collapse:collapse; font-size:12px;}
+.matrix-table th{text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.02em; color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 8px; font-weight:600; background:var(--panel);}
+.matrix-table td{padding:9px 8px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+.matrix-table td.mname{color:var(--ink); font-weight:600; white-space:nowrap;}
+.matrix-table tr:nth-child(even) td{background:var(--panel-2);}
+.matrix-table a{color:var(--steel); text-decoration:none; font-weight:600;}
+.matrix-table a:hover{text-decoration:underline;}
+
+@media (max-width:900px){
+  .vendor-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:600px){
+  .vendor-grid{grid-template-columns:1fr;}
+}
+
+  /* ============================================================
+     Tracker app components — appended to shared.css at build time.
+     Uses the existing palette variables only; no new colours.
+     ============================================================ */
+
+  /* --- primary nav across the app --- */
+  .appnav{
+    display:flex; flex-wrap:wrap; gap:4px; margin-bottom:16px;
+    border-bottom:1px solid var(--line); padding-bottom:0;
+  }
+  .appnav a{
+    font-size:13px; font-weight:600; color:var(--ink-3); text-decoration:none;
+    padding:9px 14px; border-radius:7px 7px 0 0; border:1px solid transparent;
+    border-bottom:none; position:relative; top:1px;
+  }
+  .appnav a:hover{color:var(--ink); background:var(--panel-2);}
+  .appnav a.current{
+    color:var(--ink); background:var(--panel); border-color:var(--line);
+    border-bottom:1px solid var(--panel);
+  }
+
+  /* --- filter bar --- */
+  .filterbar{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; margin-bottom:20px;
+  }
+  .filterbar h4{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--ink-3); margin:0 0 10px; font-weight:600;
+  }
+  .fchips{display:flex; flex-wrap:wrap; gap:6px;}
+  .fchip{
+    font-size:12.5px; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--ink-2); padding:6px 11px; border-radius:16px; cursor:pointer;
+    user-select:none; transition:none;
+  }
+  .fchip:hover{border-color:var(--sand-dim); color:var(--ink);}
+  .fchip.on{background:var(--sand); border-color:var(--sand); color:#fff; font-weight:600;}
+  .fchip .n{opacity:.65; font-size:11px; margin-left:4px;}
+  .filter-meta{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    margin-top:14px; padding-top:12px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--ink-3);
+  }
+  .filter-meta b{color:var(--ink);}
+  .linkbtn{
+    background:none; border:none; color:var(--steel); font-size:12.5px;
+    font-weight:600; cursor:pointer; padding:0; font-family:inherit;
+  }
+  .linkbtn:hover{text-decoration:underline;}
+  .searchbox{
+    flex:1; min-width:180px; font-family:inherit; font-size:13px;
+    padding:7px 11px; border:1px solid var(--line); border-radius:7px;
+    background:var(--panel-2); color:var(--ink);
+  }
+  .searchbox:focus{outline:none; border-color:var(--sand-dim); background:var(--panel);}
+
+  /* --- vendor card additions --- */
+  .vcard-tags{display:flex; flex-wrap:wrap; gap:4px; margin:10px 0 0;}
+  .tag{
+    font-size:11px; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--ink-3); padding:3px 8px; border-radius:12px;
+  }
+  .badge{
+    font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+    padding:3px 8px; border-radius:5px; white-space:nowrap;
+  }
+  .badge.full{background:var(--green-bg); color:var(--green);}
+  .badge.pending{background:var(--panel-2); color:var(--ink-3); border:1px solid var(--line);}
+  .badge.score{background:var(--panel-2); color:var(--ink); border:1px solid var(--line);}
+  .vcard-top{gap:8px; align-items:flex-start;}
+
+  /* --- generic data table --- */
+  .dtable{width:100%; border-collapse:collapse; font-size:13px;}
+  .dtable th{
+    text-align:left; font-size:11.5px; color:var(--ink-3); font-weight:600;
+    border-bottom:1px solid var(--line); padding:9px 10px; background:var(--panel);
+    position:sticky; top:0; z-index:2;
+  }
+  .dtable td{
+    padding:10px; border-bottom:1px solid var(--line); color:var(--ink-2);
+    vertical-align:top;
+  }
+  .dtable tr:nth-child(even) td{background:var(--panel-2);}
+  .dtable td.vname{color:var(--ink); font-weight:600;}
+  .dtable a{color:var(--steel); text-decoration:none; font-weight:600;}
+  .dtable a:hover{text-decoration:underline;}
+  .tscroll{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    overflow:auto; max-height:70vh;
+  }
+
+  /* --- status pills --- */
+  .pill{
+    font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:12px;
+    white-space:nowrap; display:inline-block;
+  }
+  .pill.s-live{background:var(--green-bg); color:var(--green);}
+  .pill.s-active{background:#EAF1F5; color:var(--steel);}
+  .pill.s-early{background:var(--panel-2); color:var(--ink-3); border:1px solid var(--line);}
+  .pill.s-cold{background:var(--red-bg); color:var(--red);}
+
+  /* --- data-loading states --- */
+  .loadbar{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--sand); border-radius:10px;
+    padding:14px 18px; margin-bottom:20px; font-size:13px; color:var(--ink-2);
+  }
+  .loadbar.ok{border-left-color:var(--green);}
+  .loadbar.warn{border-left-color:var(--amber);}
+  .loadbar .grow{flex:1; min-width:200px;}
+  .loadbar b{color:var(--ink);}
+  .empty{
+    text-align:center; padding:48px 24px; color:var(--ink-3); font-size:13.5px;
+    background:var(--panel); border:1px dashed var(--line); border-radius:12px;
+  }
+  .empty b{display:block; color:var(--ink); font-size:15px; margin-bottom:6px;}
+
+  /* --- scorecard --- */
+  .score-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .scard{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px;
+  }
+  .scard-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .scard-name{font-size:15px; font-weight:700; color:var(--ink); text-decoration:none;}
+  .scard-name:hover{color:var(--sand);}
+  .scard-score{font-size:26px; font-weight:700; color:var(--sand); line-height:1;}
+  .scard-score .of{font-size:12px; color:var(--ink-3); font-weight:600;}
+  .scard-sub{font-size:12px; color:var(--ink-3); margin:4px 0 14px;}
+  .sbar{margin-bottom:9px;}
+  .sbar-lbl{display:flex; justify-content:space-between; font-size:11.5px; color:var(--ink-3); margin-bottom:3px;}
+  .sbar-lbl b{color:var(--ink-2); font-weight:600;}
+  .sbar-track{height:5px; background:var(--panel-2); border:1px solid var(--line); border-radius:3px; overflow:hidden;}
+  .sbar-fill{height:100%; background:var(--sand-dim);}
+  .scard-foot{
+    margin-top:12px; padding-top:11px; border-top:1px solid var(--line);
+    font-size:12px; color:var(--ink-3);
+  }
+  .override-note{color:var(--amber); font-weight:600;}
+
+  /* --- contact / baseball cards --- */
+  .card-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .pcard{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px; display:flex; flex-direction:column; gap:12px; text-decoration:none;
+  }
+  .pcard:hover{border-color:var(--sand-dim);}
+  .pcard-head{display:flex; gap:13px; align-items:center;}
+  .mono{
+    width:46px; height:46px; flex:none; border-radius:50%;
+    background:var(--sand); color:#fff; font-weight:700; font-size:16px;
+    display:flex; align-items:center; justify-content:center; letter-spacing:.02em;
+  }
+  .mono.alt{background:var(--steel);}
+  .pcard-name{font-size:15px; font-weight:700; color:var(--ink); line-height:1.25;}
+  .pcard-role{font-size:12px; color:var(--ink-3); margin-top:2px;}
+  .pcard-co{
+    font-size:11px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--sand); font-weight:700;
+  }
+  .pcard-body{font-size:12.5px; color:var(--ink-2); line-height:1.5;}
+  .pcard-foot{
+    margin-top:auto; padding-top:11px; border-top:1px solid var(--line);
+    display:flex; gap:10px; flex-wrap:wrap; font-size:12px;
+  }
+  .pcard-foot a, .pcard-foot span{color:var(--steel); font-weight:600; text-decoration:none;}
+  .pcard-foot span.muted{color:var(--ink-3); font-weight:400;}
+
+  /* --- person detail page --- */
+  .pdetail{display:grid; grid-template-columns:1fr 300px; gap:32px;}
+  .fact-list p{font-size:13px; color:var(--ink-2); margin:0 0 9px;}
+  .fact-list p b{color:var(--ink); font-weight:600;}
+  .private-block{
+    background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--steel); border-radius:10px; padding:16px 18px;
+  }
+  .private-block h4{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--steel); margin:0 0 10px; font-weight:700;
+  }
+
+  /* --- gip engagement panel injected into vendor dashboards --- */
+  .gip-panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; margin-top:4px;
+  }
+  .gip-summary{
+    display:flex; gap:24px; flex-wrap:wrap; align-items:center;
+    padding-bottom:14px; margin-bottom:14px; border-bottom:1px solid var(--line);
+  }
+  .gip-stat .n{font-size:20px; font-weight:700; color:var(--ink);}
+  .gip-stat .l{font-size:11px; color:var(--ink-3); margin-top:2px;}
+
+  @media (max-width:900px){
+    .score-grid, .card-grid{grid-template-columns:repeat(2,1fr);}
+    .pdetail{grid-template-columns:1fr;}
+  }
+  @media (max-width:600px){
+    .score-grid, .card-grid{grid-template-columns:1fr;}
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+  }
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="topnav">
+      <a class="back-link" href="index.html">&larr; All vendors</a>
+      &nbsp;&nbsp;<a class="back-link" href="tracker.html">Engagement tracker</a>
+      &nbsp;&nbsp;<a class="back-link" href="scorecard.html">Scorecard</a>
+      &nbsp;&nbsp;<a class="back-link" href="people.html">All contacts</a>
+    </div>
+    <div class="kicker"><span class="dot"></span>VENDOR PROFILE &nbsp;·&nbsp; FRONTIER AI LAB — CONSUMER AND ENTERPRISE &nbsp;·&nbsp; SEPTEMBER 11, 2026</div>
+    <h1><a href="https://openai.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">OpenAI ↗</a></h1>
+    <p class="tagline">The most widely deployed AI product in the enterprise, losing money at a scale that will be tested by a public listing</p>
+    <div class="kpi-row"><div class="kpi"><div class="num">2015</div><div class="lbl">Founded</div></div><div class="kpi"><div class="num">$40B+</div><div class="lbl">Run rate (Aug 2026)</div></div><div class="kpi"><div class="num">$852B</div><div class="lbl">Valuation (Mar 2026)</div></div><div class="kpi"><div class="num">~92%</div><div class="lbl">Fortune 500 using ChatGPT</div></div><div class="kpi"><div class="num">$20.9B</div><div class="lbl">2025 operating loss</div></div></div>
+    <div class="btn-row">
+      <a class="btn" href="openai-one-sheet.pdf" download>Download one-pager (PDF) &darr;</a>
+      <a class="btn secondary" href="https://openai.com" target="_blank" rel="noopener">Visit website ↗</a>
+      <a class="btn secondary" href="market-overview.html">← All vendors in this market</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>Company snapshot</h2></div>
+    <div class="snap-grid">
+      <div>
+        <p>The most broadly adopted AI product in the enterprise — roughly 92% of the Fortune 500 use ChatGPT and business customers passed one million in November 2025 — while carrying losses large enough that the IPO timetable has slipped from a 2026 listing toward 2027.</p>
+        <p><b>Offering:</b> ChatGPT across free, Plus ($20/month) and Pro ($200/month) tiers, enterprise plans, and the API and developer platform. An advertising pilot was added during 2026.</p>
+        <div class="callout" style="margin-top:18px;"><b>Research note:</b> OpenAI's reported figures vary widely by source and date, and the gap between annualised run rate and audited booked revenue is large. Treat every number here as reported rather than confirmed, and re-run before external use — particularly around the IPO.</div>
+      </div>
+      <div>
+        <div class="side-block">
+          <h4>Key facts</h4>
+          <p style="margin:0 0 6px;"><b>Founded:</b> 2015 (as a non-profit); recapitalised in October 2025 as OpenAI Group PBC</p>
+          <p style="margin:0 0 6px;"><b>HQ:</b> San Francisco, California</p>
+          <p style="margin:0 0 6px;"><b>Ownership:</b> Private. $852B post-money valuation from a $122B round in March 2026 led by SoftBank and Microsoft. Confidential S-1 filed 8 June 2026; reporting indicates a 2027 listing is more likely than 2026</p>
+          <p style="margin:0 0 6px;"><b>Revenue:</b> Annualised run rate reported at roughly $20B at end-2025, about $25B by February 2026 and over $40B by August 2026. Leaked audited figures indicate $13.1B of booked revenue in 2025 against an operating loss of $20.9B</p>
+          <p style="margin:0;"><b>Web:</b> <a href="https://openai.com" target="_blank" rel="noopener" style="color:var(--steel);">openai.com</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/company/openai" target="_blank" rel="noopener" style="color:var(--steel);">LinkedIn ↗</a></p>
+        </div>
+        <div class="side-block">
+          <h4>Key people</h4>
+          <div class="chip-row"><span class="chip"><b>Sam Altman</b> — Chief Executive Officer</span><span class="chip"><b>Sarah Friar</b> — Chief Financial Officer</span></div>
+        </div>
+        <div class="side-block">
+          <h4>Named customers (public sources)</h4>
+          <div class="chip-row"></div>
+        </div>
+        <div class="side-block">
+          <h4>Capabilities</h4>
+          <div class="grade-row">
+            <div class="grade"><div class="letter" style="font-size:13px;">No</div><div class="cap">Digital twin</div></div>
+            <div class="grade"><div class="letter" style="font-size:13px;">Yes</div><div class="cap">Agentic / GenAI</div></div>
+          </div>
+          <div style="margin-top:10px;" class="qual-note">Primary buyer: Broad — consumers, developers and enterprise IT, with enterprise now above 40% of revenue</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Use cases &amp; reported metrics</h2></div>
+    <div class="sec-note">All impact figures below are vendor- or partner-reported and have not been independently audited.</div>
+    <div class="uc-grid">
+      <a class="uc-card" href="https://aibusinessweekly.net/p/openai-statistics" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Enterprise penetration</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">ChatGPT deployed across consumer, team and enterprise tiers, with the developer ecosystem expanding through the API.</div>
+        <div class="uc-metric">Approximately 92% of the Fortune 500 use ChatGPT; business customers passed one million in November 2025; ChatGPT reached 900 million weekly and crossed one billion monthly active users in June 2026</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://www.buildmvpfast.com/blog/openai-ipo-filing-valuation-s1-2026" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Revenue mix shift</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">A deliberate shift from consumer subscriptions toward enterprise contracts and developer API usage, with a new advertising line added during 2026.</div>
+        <div class="uc-metric">Enterprise now above 40% of revenue and on pace for parity with consumer; the ads pilot reached $100M of annualised revenue in under six weeks</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://fortrovepartners.com/openai-ipo-timeline-valuation-tracker/" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Capital markets</span><span class="uc-status">Announced</span></div>
+        <div class="uc-deploy">A $122B funding round at $852B post-money in March 2026 led by SoftBank and Microsoft, followed by a confidential S-1 filed 8 June 2026 with Goldman Sachs, Morgan Stanley and JPMorgan leading.</div>
+        <div class="uc-metric">Altman has reportedly treated any valuation below $1 trillion as a non-starter; CFO Sarah Friar told staff OpenAI will be a public company in 2027</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://tech-insider.org/openai-ipo-850-billion-valuation-2026/" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Cost structure</span><span class="uc-status">Research finding</span></div>
+        <div class="uc-deploy">Compute and infrastructure commitments scaling ahead of revenue, under a renegotiated Microsoft arrangement.</div>
+        <div class="uc-metric">Leaked audited 2025 figures show $13.1B booked revenue against a $20.9B operating loss; projected cash burn revised up to roughly $27B in 2026 and ~$63B in 2027</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Competitive landscape</h2></div>
+    <table class="comp-table">
+      <thead><tr><th style="width:28%;">Vendor</th><th style="width:44%;">Category</th><th>Revenue (latest/est.)</th></tr></thead>
+      <tbody><tr><td class="mname"><a href="aws-dashboard.html">Amazon Web Services</a></td><td>Cloud infrastructure &amp; AI platform</td><td>~$150B (annualised)</td></tr><tr><td class="mname"><a href="anthropic-dashboard.html">Anthropic</a></td><td>Frontier AI lab — enterprise-first</td><td>$47B (May 2026)</td></tr><tr><td class="mname"><a href="google-dashboard.html">Google</a></td><td>Cloud, frontier models &amp; consumer platforms</td><td>$24.8B/qtr (Cloud)</td></tr><tr><td class="mname"><a href="meta-dashboard.html">Meta</a></td><td>Consumer platforms &amp; open-weight AI models</td><td>$56.3B (Q1 26)</td></tr><tr><td class="mname"><a href="microsoft-dashboard.html">Microsoft</a></td><td>Cloud, enterprise software &amp; AI platform</td><td>$331.8B (FY26)</td></tr><tr><td class="mname"><a href="nvidia-dashboard.html">NVIDIA</a></td><td>Accelerated computing &amp; AI infrastructure</td><td>$215.9B (FY26)</td></tr><tr><td class="mname"><a href="perplexity-dashboard.html">Perplexity</a></td><td>AI answer engine &amp; agentic browser</td><td>~$450–500M ARR</td></tr><tr><td class="mname"><a href="xai-dashboard.html">xAI</a></td><td>Frontier AI lab — now a SpaceX subsidiary</td><td>~$500M ARR</td></tr>
+      </tbody>
+    </table>
+    
+    <div class="position-note"><b>Where it sits:</b> For a portfolio programme, OpenAI's advantage is penetration: the product is already inside most organisations, often through individual and team subscriptions before IT gets involved, which makes governance rather than procurement the first problem to solve. The strategic risk to watch is what a listing does to the product. A public company optimises for margin and for revenue-driving enterprise features; reporting suggests API-only customers may find themselves in a lower priority tier than large enterprise accounts. Any PortCo running production workloads on the API should have a portability plan regardless, and the economics of open-weight alternatives strengthen every time a closed provider approaches a listing.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>GIP &amp; BlackRock connections</h2></div>
+    <div class="sec-note">Global Infrastructure Partners (GIP) became a wholly-owned BlackRock subsidiary in October 2024 and now operates as BlackRock's dedicated infrastructure-investment arm. Ownership stakes below are standard institutional/index-fund positions unless otherwise noted — that is a capital-markets fact, not evidence of an operating relationship.</div>
+    <table class="scale-table">
+      <thead><tr><th style="width:22%;">Entity</th><th>Possible connection</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Global Infrastructure Partners</td><td>No publicly disclosed GIP relationship. ChatGPT is near-certain to be present across PortCos already, frequently through unmanaged individual subscriptions — which makes this a governance and consolidation question rather than a vendor selection one. OpenAI's compute commitments also make it a major driver of data-centre demand, including through Oracle's backlog.</td></tr>
+        <tr><td class="name">BlackRock</td><td>No publicly disclosed operating relationship. OpenAI is private; the March 2026 round was led by SoftBank and Microsoft.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Sentiment</h2></div>
+
+    <div class="subhead">Customer sentiment</div>
+    <div class="qual-note" style="margin-bottom:18px;">Adoption is the strongest of any AI vendor tracked here and it arrived bottom-up rather than through procurement, which is both the strength and the governance problem. The counter-signal is competitive: Anthropic overtook OpenAI on revenue in April 2026 and on private valuation in May, and Ramp data shows roughly 79% overlap in paying customers between the two — enterprises are running both rather than standardising.</div>
+
+    <div class="subhead">Market &amp; analyst sentiment</div>
+    <div class="sent-grid">
+      <div class="sent-col bull">
+        <div class="sent-head">What supports the story</div>
+        <ul><li>Roughly 92% of the Fortune 500 use ChatGPT, and over a million business customers — unmatched penetration</li><li>Revenue run rate moved from about $20B at end-2025 to over $40B by August 2026</li><li>Enterprise is now above 40% of revenue and closing on parity with consumer, shifting the mix toward contracted spend</li><li>The ads pilot reached $100M annualised in under six weeks, evidencing a genuinely new revenue line</li></ul>
+      </div>
+      <div class="sent-col bear">
+        <div class="sent-head">What to pressure-test</div>
+        <ul><li>Leaked audited 2025 figures show $13.1B of booked revenue against a $20.9B operating loss — the run-rate numbers and the audited numbers are very different things</li><li>Projected cash burn of roughly $27B in 2026 and ~$63B in 2027</li><li>One analyst framing of the valuation is that it prices a monopoly outcome that does not yet exist</li><li>A listing will reprioritise enterprise accounts over API-only customers, per reporting — a real consideration for production workloads</li><li>Anthropic passed OpenAI on both revenue and private valuation during 2026</li></ul>
+      </div>
+    </div>
+
+    <div class="subhead">Employee sentiment</div>
+    <div class="qual-note">Not covered in this pass — headcount is not reliably disclosed and no employer-review data was gathered. One governance detail found: Altman reportedly holds no equity in the company.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">06</span><h2>GIP engagement</h2></div>
+    <div class="sec-note">Live from your tracker workbook. Nothing here is published or uploaded.</div>
+    <div id="gip-loadbar" class="loadbar">Reading gip-tracker.xlsx…</div>
+    <div class="gip-panel" id="gip-panel" data-vendor="OpenAI"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">07</span><h2>Contacts</h2></div>
+    <div class="sec-note">Each card opens that person's dashboard, which links to their downloadable
+    white paper. <a href="people.html?vendor=openai" style="color:var(--steel);">All OpenAI contacts &rarr;</a>
+    &nbsp;·&nbsp; <a href="people.html" style="color:var(--steel);">All contacts across every vendor &rarr;</a></div>
+    <div class="card-grid" id="gip-people"></div>
+    <div id="nopeople" class="empty" style="display:none;"><b>No contacts on file</b>Add rows for OpenAI on the People sheet.</div>
+  </section>
+
+  <footer>
+    <b>Sources:</b> OpenAI public filings/website, company fact sheets, Wikipedia, PitchBook/Crunchbase/Datanyze/BuiltIn company profiles, Glassdoor employer reviews, vendor case studies and press releases, SEC Schedule 13D/13G/13F filings, and BlackRock/GIP corporate disclosures, as of September 2026. Figures marked “est.” or “not disclosed” are third-party estimates or unavailable, not company-confirmed — validate in diligence.<br>
+    Part of the <a href="market-overview.html" style="color:var(--steel);">Physical AI / Industrial AI for Critical Infrastructure market landscape</a>.
+  </footer>
+
+</div>
+<script src="xlsx.full.min.js"></script>
+<script src="gip-loader.js"></script>
+<script src="app-data.js"></script>
+<script src="gip-panel.js"></script>
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Palantir Technologies — Vendor Profile</title>
+<style>
+
+  :root{
+    --bg:#EFF0F3; --panel:#FFFFFF; --panel-2:#F5F6F8; --line:#DCDFE4;
+    --ink:#14161C; --ink-2:#3A3F4B; --ink-3:#5B6270;
+    --sand:#A5702B; --sand-dim:#C79256; --steel:#2B6684;
+    --green:#1F7A4D; --green-bg:#E6F5EC; --red:#B23A2E; --red-bg:#FBEAE8; --amber:#8A5B10;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px 60px;}
+
+  header.hero{
+    background:linear-gradient(180deg,#F5F6F8,#EFF0F3);
+    border-bottom:1px solid var(--line);
+    padding:40px 24px 28px;
+  }
+  .hero-inner{max-width:1080px; margin:0 auto;}
+  .kicker{
+    font-size:12.5px; color:var(--sand); letter-spacing:.02em; font-weight:600;
+    display:flex; gap:8px; align-items:center; margin-bottom:10px;
+  }
+  .kicker .dot{width:5px; height:5px; border-radius:50%; background:var(--sand);}
+  h1{font-size:34px; margin:0 0 8px; font-weight:700; letter-spacing:-0.01em; color:var(--ink);}
+  .tagline{color:var(--ink-2); font-size:15px; max-width:640px; margin:0;}
+  .tagline a{color:var(--steel); text-decoration:none;}
+
+  .kpi-row{
+    display:grid; grid-template-columns:repeat(7,1fr); gap:10px;
+    margin-top:26px;
+  }
+  .kpi{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 14px; text-align:left;}
+  .kpi .num{font-size:20px; font-weight:700; color:var(--ink);}
+  .kpi .lbl{font-size:11px; color:var(--ink-3); margin-top:4px;}
+
+  section{padding:38px 0; border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .sec-head{display:flex; align-items:baseline; gap:10px; margin-bottom:18px;}
+  .sec-num{color:var(--sand); font-weight:700; font-size:13px;}
+  h2{font-size:19px; margin:0; font-weight:700; color:var(--ink);}
+  .sec-note{color:var(--ink-3); font-size:12.5px; margin:-8px 0 18px;}
+
+  /* snapshot */
+  .snap-grid{display:grid; grid-template-columns:1.35fr 1fr; gap:32px;}
+  .snap-grid p{font-size:14px; color:var(--ink-2); margin:0 0 14px;}
+  .snap-grid p b{color:var(--ink); font-weight:600;}
+  .side-block{margin-bottom:18px;}
+  .side-block h4{font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-3); margin:0 0 8px; font-weight:600;}
+  .chip-row{display:flex; flex-wrap:wrap; gap:6px;}
+  .chip{
+    font-size:12.5px; background:var(--panel); border:1px solid var(--line);
+    color:var(--ink-2); padding:5px 10px; border-radius:6px;
+  }
+
+  /* ratings */
+  .rating-cards{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;}
+  .rcard{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 20px;}
+  .rcard .src{font-size:12px; color:var(--ink-3); margin-bottom:10px;}
+  .rcard .big{font-size:28px; font-weight:700; display:flex; align-items:baseline; gap:8px; color:var(--ink);}
+  .rcard .big small{font-size:13px; color:var(--ink-3); font-weight:400;}
+  .meter{height:8px; background:var(--panel-2); border-radius:4px; margin:12px 0 10px; overflow:hidden;}
+  .meter > div{height:100%; background:var(--sand); border-radius:4px;}
+  .stat-line{display:flex; justify-content:space-between; font-size:12.5px; color:var(--ink-2); padding:4px 0; border-top:1px solid var(--line);}
+  .grade-row{display:flex; gap:8px; margin-top:12px;}
+  .grade{
+    flex:1; text-align:center; border-radius:8px; padding:10px 6px; border:1px solid var(--line); background:var(--panel-2);
+  }
+  .grade .letter{font-size:18px; font-weight:700; color:var(--sand);}
+  .grade.weak .letter{color:var(--red);}
+  .grade .cap{font-size:10.5px; color:var(--ink-3); margin-top:3px;}
+  .qual-note{font-size:12.5px; color:var(--ink-2); background:var(--panel-2); border-left:2px solid var(--sand); padding:10px 12px; border-radius:0 6px 6px 0;}
+
+  /* use cases */
+  .uc-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  a.uc-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 18px;
+    display:block; text-decoration:none; color:inherit; transition:border-color .15s, background .15s;
+  }
+  a.uc-card:hover{border-color:var(--sand-dim); background:var(--panel-2);}
+  a.uc-card:hover .uc-deploy{color:var(--sand);}
+  .uc-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;}
+  .uc-sector{font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--sand); font-weight:700;}
+  .uc-status-group{display:flex; align-items:center; gap:6px;}
+  .uc-status{font-size:10.5px; background:var(--green-bg); color:var(--green); padding:2px 8px; border-radius:20px; font-weight:600;}
+  .uc-link{font-size:11px; color:var(--ink-3);}
+  .uc-deploy{font-size:13.5px; color:var(--ink); font-weight:600; margin-bottom:6px; transition:color .15s;}
+  .uc-metric{font-size:12.5px; color:var(--ink-2);}
+  .uc-src{font-size:11px; color:var(--ink-3); margin-top:8px; padding-top:8px; border-top:1px solid var(--line);}
+
+  /* competitive */
+  .comp-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .comp-table th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 10px; font-weight:600;
+  }
+  .comp-table td{padding:10px 10px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+  .comp-table td.name{color:var(--ink); font-weight:600;}
+  .tag-direct{color:var(--sand); font-size:11px; font-weight:700;}
+  .tag-adjacent{color:var(--steel); font-size:11px; font-weight:700;}
+  .position-note{font-size:13.5px; color:var(--ink-2); margin-top:16px; padding-top:16px; border-top:1px solid var(--line);}
+  .position-note b{color:var(--ink);}
+  .subhead{font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-3); font-weight:600; margin:28px 0 12px;}
+  .scale-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .scale-table th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 10px; font-weight:600;}
+  .scale-table td{padding:10px 10px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+  .scale-table td.name{color:var(--ink); font-weight:600;}
+  .bar-cell{display:flex; align-items:center; gap:8px;}
+  .bar-track{flex:1; height:6px; background:var(--panel-2); border-radius:3px; overflow:hidden; max-width:120px; border:1px solid var(--line);}
+  .bar-fill{height:100%; background:var(--steel);}
+  .bar-fill.sand-fill{background:var(--sand);}
+  .callout{
+    background:var(--panel-2); border:1px solid var(--line); border-left:2px solid var(--steel);
+    border-radius:0 8px 8px 0; padding:14px 16px; font-size:13px; color:var(--ink-2); margin-top:18px;
+  }
+  .callout b{color:var(--ink);}
+
+  /* sentiment */
+  .sent-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .sent-col{border-radius:10px; padding:18px 20px; border:1px solid var(--line);}
+  .sent-col.bull{background:var(--green-bg);}
+  .sent-col.bear{background:var(--red-bg);}
+  .sent-head{font-size:13px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;}
+  .sent-col.bull .sent-head{color:var(--green);}
+  .sent-col.bear .sent-head{color:var(--red);}
+  .sent-col ul{margin:0; padding-left:16px; font-size:13px; color:var(--ink-2);}
+  .sent-col li{margin-bottom:8px;}
+  .chart-box{margin-top:20px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 20px;}
+  .chart-box .chart-title{font-size:12.5px; color:var(--ink-3); margin-bottom:12px;}
+
+  footer{padding:26px 0 10px; font-size:11.5px; color:var(--ink-3); line-height:1.6;}
+  footer b{color:var(--ink-2);}
+
+  @media (max-width:720px){
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+    .snap-grid, .rating-cards, .uc-grid, .sent-grid{grid-template-columns:1fr;}
+    h1{font-size:26px;}
+  }
+
+/* --- market hub additions --- */
+.topnav{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+.back-link{font-size:12.5px; color:var(--steel); text-decoration:none; font-weight:600;}
+.back-link:hover{text-decoration:underline;}
+.btn{
+  display:inline-block; font-size:12.5px; font-weight:600; color:#fff; background:var(--ink);
+  padding:8px 14px; border-radius:8px; text-decoration:none; border:1px solid var(--ink);
+}
+.btn:hover{background:var(--sand); border-color:var(--sand);}
+.btn.secondary{background:var(--panel); color:var(--ink); border:1px solid var(--line);}
+.btn.secondary:hover{background:var(--panel-2); border-color:var(--sand-dim); color:var(--sand);}
+.btn-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;}
+
+.vendor-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.vcard{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column;}
+.vcard-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;}
+.vcard-name{font-size:16px; font-weight:700; color:var(--ink); text-decoration:none;}
+.vcard-name:hover{color:var(--sand);}
+.vcard-cat{font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--sand); font-weight:700; margin-bottom:6px;}
+.vcard-desc{font-size:12.5px; color:var(--ink-2); flex:1; margin-bottom:12px;}
+.vcard-kpi{background:var(--panel-2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:12px;}
+.vcard-kpi .k-num{font-size:15px; font-weight:700; color:var(--ink);}
+.vcard-kpi .k-lbl{font-size:10.5px; color:var(--ink-3);}
+.vcard-actions{display:flex; gap:6px;}
+.vcard-actions a{flex:1; text-align:center; font-size:11.5px; padding:7px 8px;}
+
+.matrix-table{width:100%; border-collapse:collapse; font-size:12px;}
+.matrix-table th{text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.02em; color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 8px; font-weight:600; background:var(--panel);}
+.matrix-table td{padding:9px 8px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+.matrix-table td.mname{color:var(--ink); font-weight:600; white-space:nowrap;}
+.matrix-table tr:nth-child(even) td{background:var(--panel-2);}
+.matrix-table a{color:var(--steel); text-decoration:none; font-weight:600;}
+.matrix-table a:hover{text-decoration:underline;}
+
+@media (max-width:900px){
+  .vendor-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:600px){
+  .vendor-grid{grid-template-columns:1fr;}
+}
+
+  /* ============================================================
+     Tracker app components — appended to shared.css at build time.
+     Uses the existing palette variables only; no new colours.
+     ============================================================ */
+
+  /* --- primary nav across the app --- */
+  .appnav{
+    display:flex; flex-wrap:wrap; gap:4px; margin-bottom:16px;
+    border-bottom:1px solid var(--line); padding-bottom:0;
+  }
+  .appnav a{
+    font-size:13px; font-weight:600; color:var(--ink-3); text-decoration:none;
+    padding:9px 14px; border-radius:7px 7px 0 0; border:1px solid transparent;
+    border-bottom:none; position:relative; top:1px;
+  }
+  .appnav a:hover{color:var(--ink); background:var(--panel-2);}
+  .appnav a.current{
+    color:var(--ink); background:var(--panel); border-color:var(--line);
+    border-bottom:1px solid var(--panel);
+  }
+
+  /* --- filter bar --- */
+  .filterbar{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; margin-bottom:20px;
+  }
+  .filterbar h4{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--ink-3); margin:0 0 10px; font-weight:600;
+  }
+  .fchips{display:flex; flex-wrap:wrap; gap:6px;}
+  .fchip{
+    font-size:12.5px; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--ink-2); padding:6px 11px; border-radius:16px; cursor:pointer;
+    user-select:none; transition:none;
+  }
+  .fchip:hover{border-color:var(--sand-dim); color:var(--ink);}
+  .fchip.on{background:var(--sand); border-color:var(--sand); color:#fff; font-weight:600;}
+  .fchip .n{opacity:.65; font-size:11px; margin-left:4px;}
+  .filter-meta{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    margin-top:14px; padding-top:12px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--ink-3);
+  }
+  .filter-meta b{color:var(--ink);}
+  .linkbtn{
+    background:none; border:none; color:var(--steel); font-size:12.5px;
+    font-weight:600; cursor:pointer; padding:0; font-family:inherit;
+  }
+  .linkbtn:hover{text-decoration:underline;}
+  .searchbox{
+    flex:1; min-width:180px; font-family:inherit; font-size:13px;
+    padding:7px 11px; border:1px solid var(--line); border-radius:7px;
+    background:var(--panel-2); color:var(--ink);
+  }
+  .searchbox:focus{outline:none; border-color:var(--sand-dim); background:var(--panel);}
+
+  /* --- vendor card additions --- */
+  .vcard-tags{display:flex; flex-wrap:wrap; gap:4px; margin:10px 0 0;}
+  .tag{
+    font-size:11px; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--ink-3); padding:3px 8px; border-radius:12px;
+  }
+  .badge{
+    font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+    padding:3px 8px; border-radius:5px; white-space:nowrap;
+  }
+  .badge.full{background:var(--green-bg); color:var(--green);}
+  .badge.pending{background:var(--panel-2); color:var(--ink-3); border:1px solid var(--line);}
+  .badge.score{background:var(--panel-2); color:var(--ink); border:1px solid var(--line);}
+  .vcard-top{gap:8px; align-items:flex-start;}
+
+  /* --- generic data table --- */
+  .dtable{width:100%; border-collapse:collapse; font-size:13px;}
+  .dtable th{
+    text-align:left; font-size:11.5px; color:var(--ink-3); font-weight:600;
+    border-bottom:1px solid var(--line); padding:9px 10px; background:var(--panel);
+    position:sticky; top:0; z-index:2;
+  }
+  .dtable td{
+    padding:10px; border-bottom:1px solid var(--line); color:var(--ink-2);
+    vertical-align:top;
+  }
+  .dtable tr:nth-child(even) td{background:var(--panel-2);}
+  .dtable td.vname{color:var(--ink); font-weight:600;}
+  .dtable a{color:var(--steel); text-decoration:none; font-weight:600;}
+  .dtable a:hover{text-decoration:underline;}
+  .tscroll{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    overflow:auto; max-height:70vh;
+  }
+
+  /* --- status pills --- */
+  .pill{
+    font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:12px;
+    white-space:nowrap; display:inline-block;
+  }
+  .pill.s-live{background:var(--green-bg); color:var(--green);}
+  .pill.s-active{background:#EAF1F5; color:var(--steel);}
+  .pill.s-early{background:var(--panel-2); color:var(--ink-3); border:1px solid var(--line);}
+  .pill.s-cold{background:var(--red-bg); color:var(--red);}
+
+  /* --- data-loading states --- */
+  .loadbar{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--sand); border-radius:10px;
+    padding:14px 18px; margin-bottom:20px; font-size:13px; color:var(--ink-2);
+  }
+  .loadbar.ok{border-left-color:var(--green);}
+  .loadbar.warn{border-left-color:var(--amber);}
+  .loadbar .grow{flex:1; min-width:200px;}
+  .loadbar b{color:var(--ink);}
+  .empty{
+    text-align:center; padding:48px 24px; color:var(--ink-3); font-size:13.5px;
+    background:var(--panel); border:1px dashed var(--line); border-radius:12px;
+  }
+  .empty b{display:block; color:var(--ink); font-size:15px; margin-bottom:6px;}
+
+  /* --- scorecard --- */
+  .score-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .scard{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px;
+  }
+  .scard-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .scard-name{font-size:15px; font-weight:700; color:var(--ink); text-decoration:none;}
+  .scard-name:hover{color:var(--sand);}
+  .scard-score{font-size:26px; font-weight:700; color:var(--sand); line-height:1;}
+  .scard-score .of{font-size:12px; color:var(--ink-3); font-weight:600;}
+  .scard-sub{font-size:12px; color:var(--ink-3); margin:4px 0 14px;}
+  .sbar{margin-bottom:9px;}
+  .sbar-lbl{display:flex; justify-content:space-between; font-size:11.5px; color:var(--ink-3); margin-bottom:3px;}
+  .sbar-lbl b{color:var(--ink-2); font-weight:600;}
+  .sbar-track{height:5px; background:var(--panel-2); border:1px solid var(--line); border-radius:3px; overflow:hidden;}
+  .sbar-fill{height:100%; background:var(--sand-dim);}
+  .scard-foot{
+    margin-top:12px; padding-top:11px; border-top:1px solid var(--line);
+    font-size:12px; color:var(--ink-3);
+  }
+  .override-note{color:var(--amber); font-weight:600;}
+
+  /* --- contact / baseball cards --- */
+  .card-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .pcard{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px; display:flex; flex-direction:column; gap:12px; text-decoration:none;
+  }
+  .pcard:hover{border-color:var(--sand-dim);}
+  .pcard-head{display:flex; gap:13px; align-items:center;}
+  .mono{
+    width:46px; height:46px; flex:none; border-radius:50%;
+    background:var(--sand); color:#fff; font-weight:700; font-size:16px;
+    display:flex; align-items:center; justify-content:center; letter-spacing:.02em;
+  }
+  .mono.alt{background:var(--steel);}
+  .pcard-name{font-size:15px; font-weight:700; color:var(--ink); line-height:1.25;}
+  .pcard-role{font-size:12px; color:var(--ink-3); margin-top:2px;}
+  .pcard-co{
+    font-size:11px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--sand); font-weight:700;
+  }
+  .pcard-body{font-size:12.5px; color:var(--ink-2); line-height:1.5;}
+  .pcard-foot{
+    margin-top:auto; padding-top:11px; border-top:1px solid var(--line);
+    display:flex; gap:10px; flex-wrap:wrap; font-size:12px;
+  }
+  .pcard-foot a, .pcard-foot span{color:var(--steel); font-weight:600; text-decoration:none;}
+  .pcard-foot span.muted{color:var(--ink-3); font-weight:400;}
+
+  /* --- person detail page --- */
+  .pdetail{display:grid; grid-template-columns:1fr 300px; gap:32px;}
+  .fact-list p{font-size:13px; color:var(--ink-2); margin:0 0 9px;}
+  .fact-list p b{color:var(--ink); font-weight:600;}
+  .private-block{
+    background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--steel); border-radius:10px; padding:16px 18px;
+  }
+  .private-block h4{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--steel); margin:0 0 10px; font-weight:700;
+  }
+
+  /* --- gip engagement panel injected into vendor dashboards --- */
+  .gip-panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; margin-top:4px;
+  }
+  .gip-summary{
+    display:flex; gap:24px; flex-wrap:wrap; align-items:center;
+    padding-bottom:14px; margin-bottom:14px; border-bottom:1px solid var(--line);
+  }
+  .gip-stat .n{font-size:20px; font-weight:700; color:var(--ink);}
+  .gip-stat .l{font-size:11px; color:var(--ink-3); margin-top:2px;}
+
+  @media (max-width:900px){
+    .score-grid, .card-grid{grid-template-columns:repeat(2,1fr);}
+    .pdetail{grid-template-columns:1fr;}
+  }
+  @media (max-width:600px){
+    .score-grid, .card-grid{grid-template-columns:1fr;}
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+  }
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="topnav">
+      <a class="back-link" href="index.html">&larr; All vendors</a>
+      &nbsp;&nbsp;<a class="back-link" href="tracker.html">Engagement tracker</a>
+      &nbsp;&nbsp;<a class="back-link" href="scorecard.html">Scorecard</a>
+      &nbsp;&nbsp;<a class="back-link" href="people.html">All contacts</a>
+    </div>
+    <div class="kicker"><span class="dot"></span>VENDOR PROFILE &nbsp;·&nbsp; ENTERPRISE &AMP; GOVERNMENT DATA-AI PLATFORM &nbsp;·&nbsp; SEPTEMBER 11, 2026</div>
+    <h1><a href="https://www.palantir.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">Palantir Technologies ↗</a></h1>
+    <p class="tagline">The operating system for data-driven decisions across defense, intelligence and enterprise</p>
+    <div class="kpi-row"><div class="kpi"><div class="num">2003</div><div class="lbl">Founded</div></div><div class="kpi"><div class="num">~4,400</div><div class="lbl">Employees</div></div><div class="kpi"><div class="num">$4.48B (FY2025)</div><div class="lbl">Latest reported / estimated revenue</div></div><div class="kpi"><div class="num">Public</div><div class="lbl">Ownership</div></div><div class="kpi"><div class="num">3.8 / 5</div><div class="lbl">Glassdoor rating (889 reviews)</div></div></div>
+    <div class="btn-row">
+      <a class="btn" href="palantir-one-sheet.pdf" download>Download one-pager (PDF) &darr;</a>
+      <a class="btn secondary" href="https://www.palantir.com" target="_blank" rel="noopener">Visit website ↗</a>
+      <a class="btn secondary" href="market-overview.html">← All vendors in this market</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>Company snapshot</h2></div>
+    <div class="snap-grid">
+      <div>
+        <p>The best-capitalized, fastest-growing name in this market by far — GAAP-profitable, ~56% revenue growth, and a fast-scaling “AIP Bootcamp” go-to-market motion pulling U.S. commercial revenue up over 130% YoY.</p>
+        <p><b>Offering:</b> Four core platforms: Gotham (defense/intelligence), Foundry (commercial enterprise data integration), Apollo (deployment infrastructure) and AIP (AI Platform, launched 2023) — lets organizations deploy LLMs directly against their own operational data.</p>
+        
+      </div>
+      <div>
+        <div class="side-block">
+          <h4>Key facts</h4>
+          <p style="margin:0 0 6px;"><b>Founded:</b> 2003</p>
+          <p style="margin:0 0 6px;"><b>HQ:</b> Denver, CO (relocated from Palo Alto; some 2026 reports cite a Miami-area office too)</p>
+          <p style="margin:0 0 6px;"><b>Ownership:</b> Public (Nasdaq: PLTR)</p>
+          <p style="margin:0 0 6px;"><b>Revenue:</b> $4.48B (FY2025), up 56% YoY; FY2026 guidance raised to $7.65–$7.66B</p>
+          <p style="margin:0;"><b>Web:</b> <a href="https://www.palantir.com" target="_blank" rel="noopener" style="color:var(--steel);">www.palantir.com</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/company/palantir-technologies" target="_blank" rel="noopener" style="color:var(--steel);">LinkedIn ↗</a></p>
+        </div>
+        <div class="side-block">
+          <h4>Key people</h4>
+          <div class="chip-row"><span class="chip"><b>Alex Karp</b> — Co-Founder &amp; CEO</span><span class="chip"><b>Stephen Cohen</b> — Co-Founder &amp; President</span><span class="chip"><b>Peter Thiel</b> — Co-Founder &amp; Chairman of the Board</span><span class="chip"><b>Shyam Sankar</b> — Chief Technology Officer</span></div>
+        </div>
+        <div class="side-block">
+          <h4>Named customers (public sources)</h4>
+          <div class="chip-row"><span class="chip">CIA</span><span class="chip">U.S. Army</span><span class="chip">NHS England</span><span class="chip">Airbus</span><span class="chip">Ferrari</span><span class="chip">Morgan Stanley</span><span class="chip">Merck KGaA</span><span class="chip">PG&amp;E</span></div>
+        </div>
+        <div class="side-block">
+          <h4>Capabilities</h4>
+          <div class="grade-row">
+            <div class="grade"><div class="letter" style="font-size:13px;">Partial</div><div class="cap">Digital twin</div></div>
+            <div class="grade"><div class="letter" style="font-size:13px;">Yes — AIP is the fastest-growing product line</div><div class="cap">Agentic / GenAI</div></div>
+          </div>
+          <div style="margin-top:10px;" class="qual-note">Primary buyer: Government/defense agencies and enterprise data &amp; ops leaders</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Use cases &amp; reported metrics</h2></div>
+    <div class="sec-note">All impact figures below are vendor- or partner-reported and have not been independently audited.</div>
+    <div class="uc-grid">
+      <a class="uc-card" href="https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RW1nTi3" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Aerospace / manufacturing</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">Airbus — Skywise platform on Foundry</div>
+        <div class="uc-metric">+33% production increase on the A350 aircraft line; Skywise now improves decision-making at 100+ airlines</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RW1nTi3" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Energy</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">Oil &amp; gas major — Foundry data integration</div>
+        <div class="uc-metric">Scanned 300+ SAP data sets across 5 legacy ERPs; unlocked ~$50M working capital in 2 weeks; identified 30k additional barrels/day, ~$1B additional opportunity</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RW1nTi3" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Utilities</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">PG&amp;E — wildfire risk &amp; grid optimization</div>
+        <div class="uc-metric">8–10 billion data points processed daily to inform wildfire mitigation and grid decisions for 16 million customers</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RW1nTi3" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Financial services</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">Global commercial bank — Foundry + AIP</div>
+        <div class="uc-metric">1,200+ data sources integrated; $65M+ additional revenue unlocked across 100 use cases and 15,000+ users</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://digitalstrategy.rsm.nl/2025/09/17/palantir-data-integration-or-digital-dependency/" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Healthcare / government</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">NHS England — Federated Data Platform</div>
+        <div class="uc-metric">£330M contract; described as providing a “single source of truth” for the UK's largest operational data integration exercise</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Competitive landscape</h2></div>
+    <table class="comp-table">
+      <thead><tr><th style="width:28%;">Vendor</th><th style="width:44%;">Category</th><th>Revenue (latest/est.)</th></tr></thead>
+      <tbody><tr><td class="mname"><a href="aveva-dashboard.html">AVEVA</a></td><td>Industrial software / digital-twin suite</td><td>Not disclosed</td></tr><tr><td class="mname"><a href="bentley-systems-dashboard.html">Bentley Systems</a></td><td>Infrastructure engineering software</td><td>$1.5B (FY2025)</td></tr><tr><td class="mname"><a href="c3ai-dashboard.html">C3.ai</a></td><td>Enterprise AI application platform</td><td>$389M (FY2025)</td></tr><tr><td class="mname"><a href="cognite-dashboard.html">Cognite</a></td><td>Industrial data &amp; digital-twin platform</td><td>$170M+ (2025)</td></tr><tr><td class="mname"><a href="honeywell-forge-dashboard.html">Honeywell Forge</a></td><td>Industrial IoT / AI software platform</td><td>Not disclosed</td></tr><tr><td class="mname"><a href="ibm-watsonx-dashboard.html">IBM watsonx</a></td><td>Enterprise AI &amp; data platform</td><td>Not disclosed</td></tr><tr><td class="mname"><a href="sand-technologies-dashboard.html">Sand Technologies</a></td><td>Physical AI platform (infrastructure control)</td><td>$15–67M (est.)</td></tr><tr><td class="mname"><a href="siemens-xcelerator-dashboard.html">Siemens Xcelerator</a></td><td>Open industrial digital-business platform / ecosystem</td><td>Not disclosed</td></tr>
+      </tbody>
+    </table>
+    
+    <div class="position-note"><b>Where it sits:</b> Broadest platform ambition and by far the largest balance sheet in this market. Closest comparable to Sand on category ambition (“operating system” framing) but built for data/decisions generally, not physical-infrastructure control specifically.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>GIP &amp; BlackRock connections</h2></div>
+    <div class="sec-note">Global Infrastructure Partners (GIP) became a wholly-owned BlackRock subsidiary in October 2024 and now operates as BlackRock's dedicated infrastructure-investment arm. Ownership stakes below are standard institutional/index-fund positions unless otherwise noted — that is a capital-markets fact, not evidence of an operating relationship.</div>
+    <table class="scale-table">
+      <thead><tr><th style="width:22%;">Entity</th><th>Possible connection</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Global Infrastructure Partners</td><td>No named GIP portfolio company was confirmed as a Palantir customer in available sources. The sectoral overlap is real — Palantir markets Foundry/AIP explicitly for “critical infrastructure,” construction (named partners McCarthy and Kiewit), and government, territory that includes GIP-style assets like airports, ports and utilities — but no specific GIP-owned asset was confirmed as a live deployment.</td></tr>
+        <tr><td class="name">BlackRock</td><td>Confirmed and substantial, but passive: BlackRock is one of Palantir's largest institutional shareholders, holding roughly 5.5%–8.7% of shares outstanding across recent 13G/13F filings (an ~$19.9B position as of mid-2026, per TIKR/SEC data). This is standard index-fund ownership — BlackRock holds comparable stakes in thousands of public companies — not a commercial or operating partnership.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Sentiment</h2></div>
+
+    <div class="subhead">Customer sentiment</div>
+    <div class="qual-note" style="margin-bottom:18px;">Strong, vocal reference customers (BP, PG&amp;E, NHS) appear repeatedly in Palantir's own case studies and at its AIPCon customer events, but independent third-party review volume (G2/Gartner Peer Insights) is thin relative to its market cap — most public sentiment is analyst/investor commentary rather than software-buyer reviews.</div>
+
+    <div class="subhead">Market &amp; analyst sentiment</div>
+    <div class="sent-grid">
+      <div class="sent-col bull">
+        <div class="sent-head">What supports the story</div>
+        <ul><li>Revenue growth accelerating — 56% YoY in FY2025, guiding to 61%+ for FY2026, GAAP-profitable since 2023</li><li>AIP Bootcamp model converts roughly 75% of prospects into signed contracts; U.S. commercial revenue up 130%+ YoY</li><li>S&amp;P 500 inclusion (Sept 2024) and a fast-growing roster of blue-chip commercial reference customers</li></ul>
+      </div>
+      <div class="sent-col bear">
+        <div class="sent-head">What to pressure-test</div>
+        <ul><li>Valuation is priced for perfection — among the most expensive large-cap software multiples in the market</li><li>Deep ties to defense/intelligence work draw recurring criticism (ACLU and others) over predictive-policing use of Gotham</li><li>Customer lock-in risk is real: once operations run on Foundry's ontology, switching costs are very high</li></ul>
+      </div>
+    </div>
+
+    <div class="subhead">Employee sentiment</div>
+    <div class="qual-note">High talent density and real-world mission impact are the most-cited positives; work-life balance is the most-cited negative (2.8/5 on that sub-metric) alongside opaque post-cliff compensation communication.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">06</span><h2>GIP engagement</h2></div>
+    <div class="sec-note">Live from your tracker workbook. Nothing here is published or uploaded.</div>
+    <div id="gip-loadbar" class="loadbar">Reading gip-tracker.xlsx…</div>
+    <div class="gip-panel" id="gip-panel" data-vendor="Palantir Technologies"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">07</span><h2>Contacts</h2></div>
+    <div class="sec-note">Each card opens that person's dashboard, which links to their downloadable
+    white paper. <a href="people.html?vendor=palantir" style="color:var(--steel);">All Palantir Technologies contacts &rarr;</a>
+    &nbsp;·&nbsp; <a href="people.html" style="color:var(--steel);">All contacts across every vendor &rarr;</a></div>
+    <div class="card-grid" id="gip-people"></div>
+    <div id="nopeople" class="empty" style="display:none;"><b>No contacts on file</b>Add rows for Palantir Technologies on the People sheet.</div>
+  </section>
+
+  <footer>
+    <b>Sources:</b> Palantir Technologies public filings/website, company fact sheets, Wikipedia, PitchBook/Crunchbase/Datanyze/BuiltIn company profiles, Glassdoor employer reviews, vendor case studies and press releases, SEC Schedule 13D/13G/13F filings, and BlackRock/GIP corporate disclosures, as of September 2026. Figures marked “est.” or “not disclosed” are third-party estimates or unavailable, not company-confirmed — validate in diligence.<br>
+    Part of the <a href="market-overview.html" style="color:var(--steel);">Physical AI / Industrial AI for Critical Infrastructure market landscape</a>.
+  </footer>
+
+</div>
+<script src="xlsx.full.min.js"></script>
+<script src="gip-loader.js"></script>
+<script src="app-data.js"></script>
+<script src="gip-panel.js"></script>
+</body>
+</html>
