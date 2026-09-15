@@ -1,0 +1,136 @@
+GIP VENDOR & TECHNOLOGY TRACKER — TODO
+Generated 15 September 2026
+
+Ordered by what blocks what. Items 1-4 gate items 5-12.
+
+
+--------------------------------------------------------------------------
+DECISIONS ONLY YOU CAN MAKE
+--------------------------------------------------------------------------
+
+[ ] 1. Who else edits the workbook?
+       If the BI Leads contribute engagement rows, one Excel file becomes a
+       bottleneck and a merge-conflict risk. Decide between:
+         (a) per-lead workbooks merged at build time, or
+         (b) SharePoint / Teams, with the app reading the synced local copy.
+       BLOCKS: items 5 and 9.
+
+[ ] 2. Can you get contract end dates and value bands?
+       From the PortCos or from legal. Without them you cannot TIME a
+       consolidation, only identify one.
+       The columns now exist on the Engagements sheet: Contract End,
+       Annual Value Band, Notice Period. They just need filling.
+       BLOCKS: item 8.
+
+[ ] 3. Check the Meta-BlackRock El Paso structure internally.
+       $14B data centre joint venture, BlackRock funds holding 80%, announced
+       before Meta's Q2 2026 earnings. Confirm how it sits relative to GIP's
+       own digital infrastructure mandate before treating Meta as an ordinary
+       third-party vendor. See meta-dashboard.html.
+
+[ ] 4. Public GitHub repo now, or later?
+       The repo is ready and the workbook exclusion has been verified. This is
+       just your call. Instructions are in README.md under "Publishing to
+       GitHub".
+
+
+--------------------------------------------------------------------------
+BUILD QUEUE — say the word and these get built, in this order
+--------------------------------------------------------------------------
+
+[ ] 5. PortCo view.
+       The app is vendor-centric; your job is asset-centric. Pick an asset,
+       see every vendor engaged, the use cases, owner and status. This is how
+       the BI Leads and Martin would actually consume it. Needs no new data.
+       HIGHEST VALUE.
+
+[ ] 6. Consolidation analysis.
+       Same vendor across multiple PortCos = negotiating leverage.
+       Competing vendors inside one PortCo = duplicated spend.
+       Both computable from data you are already entering. This is where the
+       money is.
+
+[ ] 7. Reference-model rollup.
+       The Use Case Area column already maps to your three opportunity areas
+       (Individual Productivity, Corporate Functions Efficiency, Asset
+       Optimization) and four prerequisites. Nothing rolls it up yet.
+       Portfolio coverage across those seven is the Partners-meeting slide.
+
+[ ] 8. Contract and renewal columns, plus a 180-day renewals view.
+       REQUIRES: item 2.
+
+[ ] 9. Board pack PDF export.
+       Dated, one command. Coverage, top engagements, scorecard, what changed.
+       Mid-October Partners meeting is close.
+
+[ ] 10. History snapshots.
+        Each rebuild writes a dated snapshot so "what moved since the last
+        Partners meeting" becomes answerable. Currently it is not.
+
+[ ] 11. Staleness badges on the white pages.
+        Show the researched-on date on each page so nobody quotes a
+        six-month-old number. validate_research.py already tracks this; the
+        pages just do not surface it.
+
+[ ] 12. Auto-backup the workbook on every rebuild.
+        gip-tracker.xlsx is the only irreplaceable file here and there is
+        currently no backup step.
+
+
+--------------------------------------------------------------------------
+ONGOING — on you, not on the build
+--------------------------------------------------------------------------
+
+[ ] 13. Populate the PortCos sheet with the 47 assets.
+        Everything downstream keys off it — the PortCo dropdown, the PortCo
+        view, the consolidation analysis, the rollup.
+
+[ ] 14. Start logging engagements, even roughly.
+        The scorecard, the tracker and every view above stay empty until
+        there are rows in the Engagements sheet.
+
+[ ] 15. Back up gip-tracker.xlsx somewhere outside this folder. Today.
+        Everything else in this repo can be regenerated. This cannot.
+
+[ ] 16. Refresh the fast-movers before any external use:
+        openai, anthropic, databricks, perplexity, meta, google, xai, oracle
+        Their figures moved within weeks during the research itself.
+
+          export ANTHROPIC_API_KEY=sk-ant-...
+          python3 scripts/refresh_research.py openai anthropic databricks \
+              perplexity meta google xai oracle
+          ./rebuild.sh
+
+[ ] 17. Finish the person research: 82 of 97 contacts are done (waves 1-16).
+        Every contact already has a dashboard page and a downloadable white
+        paper; the remaining 83 render as "Research pending" until covered.
+        Professional information only - the privacy guard blocks anything else.
+
+          export ANTHROPIC_API_KEY=sk-ant-...
+          python3 scripts/refresh_people.py --pending --limit 20
+          ./rebuild.sh
+
+        Or ask Claude to run the next wave by hand, as with the vendors.
+
+[ ] 18. Re-run three vendors when the facts land:
+        - adobe    CTO could not be confirmed; deliberately omitted rather
+                   than guessed. CEO succession also unresolved.
+        - anthropic  CTO could not be confirmed; same treatment.
+        - infosys  RESOLVED in people wave 9: Ashiss Kumar Dash succeeds
+                   Salil Parekh in April 2027. Vendor record updated.
+
+
+--------------------------------------------------------------------------
+REFERENCE
+--------------------------------------------------------------------------
+
+Rebuild everything:            ./rebuild.sh   (or rebuild.bat on Windows)
+Check the research layer:      python3 scripts/validate_research.py
+Find stale research:           python3 scripts/refresh_research.py --stale 90 --dry-run
+Contact sheets with your notes: python3 scripts/build_contact_sheets.py --with-notes
+Research pending contacts:      python3 scripts/refresh_people.py --pending --limit 20
+
+Add new workbook columns after an update:
+                                python3 scripts/upgrade_workbook.py
+
+Full documentation is in README.md.

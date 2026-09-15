@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP — Vendor Profile</title>
+<style>
+
+  :root{
+    --bg:#EFF0F3; --panel:#FFFFFF; --panel-2:#F5F6F8; --line:#DCDFE4;
+    --ink:#14161C; --ink-2:#3A3F4B; --ink-3:#5B6270;
+    --sand:#A5702B; --sand-dim:#C79256; --steel:#2B6684;
+    --green:#1F7A4D; --green-bg:#E6F5EC; --red:#B23A2E; --red-bg:#FBEAE8; --amber:#8A5B10;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px 60px;}
+
+  header.hero{
+    background:linear-gradient(180deg,#F5F6F8,#EFF0F3);
+    border-bottom:1px solid var(--line);
+    padding:40px 24px 28px;
+  }
+  .hero-inner{max-width:1080px; margin:0 auto;}
+  .kicker{
+    font-size:12.5px; color:var(--sand); letter-spacing:.02em; font-weight:600;
+    display:flex; gap:8px; align-items:center; margin-bottom:10px;
+  }
+  .kicker .dot{width:5px; height:5px; border-radius:50%; background:var(--sand);}
+  h1{font-size:34px; margin:0 0 8px; font-weight:700; letter-spacing:-0.01em; color:var(--ink);}
+  .tagline{color:var(--ink-2); font-size:15px; max-width:640px; margin:0;}
+  .tagline a{color:var(--steel); text-decoration:none;}
+
+  .kpi-row{
+    display:grid; grid-template-columns:repeat(7,1fr); gap:10px;
+    margin-top:26px;
+  }
+  .kpi{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 14px; text-align:left;}
+  .kpi .num{font-size:20px; font-weight:700; color:var(--ink);}
+  .kpi .lbl{font-size:11px; color:var(--ink-3); margin-top:4px;}
+
+  section{padding:38px 0; border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .sec-head{display:flex; align-items:baseline; gap:10px; margin-bottom:18px;}
+  .sec-num{color:var(--sand); font-weight:700; font-size:13px;}
+  h2{font-size:19px; margin:0; font-weight:700; color:var(--ink);}
+  .sec-note{color:var(--ink-3); font-size:12.5px; margin:-8px 0 18px;}
+
+  /* snapshot */
+  .snap-grid{display:grid; grid-template-columns:1.35fr 1fr; gap:32px;}
+  .snap-grid p{font-size:14px; color:var(--ink-2); margin:0 0 14px;}
+  .snap-grid p b{color:var(--ink); font-weight:600;}
+  .side-block{margin-bottom:18px;}
+  .side-block h4{font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-3); margin:0 0 8px; font-weight:600;}
+  .chip-row{display:flex; flex-wrap:wrap; gap:6px;}
+  .chip{
+    font-size:12.5px; background:var(--panel); border:1px solid var(--line);
+    color:var(--ink-2); padding:5px 10px; border-radius:6px;
+  }
+
+  /* ratings */
+  .rating-cards{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;}
+  .rcard{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 20px;}
+  .rcard .src{font-size:12px; color:var(--ink-3); margin-bottom:10px;}
+  .rcard .big{font-size:28px; font-weight:700; display:flex; align-items:baseline; gap:8px; color:var(--ink);}
+  .rcard .big small{font-size:13px; color:var(--ink-3); font-weight:400;}
+  .meter{height:8px; background:var(--panel-2); border-radius:4px; margin:12px 0 10px; overflow:hidden;}
+  .meter > div{height:100%; background:var(--sand); border-radius:4px;}
+  .stat-line{display:flex; justify-content:space-between; font-size:12.5px; color:var(--ink-2); padding:4px 0; border-top:1px solid var(--line);}
+  .grade-row{display:flex; gap:8px; margin-top:12px;}
+  .grade{
+    flex:1; text-align:center; border-radius:8px; padding:10px 6px; border:1px solid var(--line); background:var(--panel-2);
+  }
+  .grade .letter{font-size:18px; font-weight:700; color:var(--sand);}
+  .grade.weak .letter{color:var(--red);}
+  .grade .cap{font-size:10.5px; color:var(--ink-3); margin-top:3px;}
+  .qual-note{font-size:12.5px; color:var(--ink-2); background:var(--panel-2); border-left:2px solid var(--sand); padding:10px 12px; border-radius:0 6px 6px 0;}
+
+  /* use cases */
+  .uc-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  a.uc-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 18px;
+    display:block; text-decoration:none; color:inherit; transition:border-color .15s, background .15s;
+  }
+  a.uc-card:hover{border-color:var(--sand-dim); background:var(--panel-2);}
+  a.uc-card:hover .uc-deploy{color:var(--sand);}
+  .uc-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;}
+  .uc-sector{font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--sand); font-weight:700;}
+  .uc-status-group{display:flex; align-items:center; gap:6px;}
+  .uc-status{font-size:10.5px; background:var(--green-bg); color:var(--green); padding:2px 8px; border-radius:20px; font-weight:600;}
+  .uc-link{font-size:11px; color:var(--ink-3);}
+  .uc-deploy{font-size:13.5px; color:var(--ink); font-weight:600; margin-bottom:6px; transition:color .15s;}
+  .uc-metric{font-size:12.5px; color:var(--ink-2);}
+  .uc-src{font-size:11px; color:var(--ink-3); margin-top:8px; padding-top:8px; border-top:1px solid var(--line);}
+
+  /* competitive */
+  .comp-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .comp-table th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 10px; font-weight:600;
+  }
+  .comp-table td{padding:10px 10px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+  .comp-table td.name{color:var(--ink); font-weight:600;}
+  .tag-direct{color:var(--sand); font-size:11px; font-weight:700;}
+  .tag-adjacent{color:var(--steel); font-size:11px; font-weight:700;}
+  .position-note{font-size:13.5px; color:var(--ink-2); margin-top:16px; padding-top:16px; border-top:1px solid var(--line);}
+  .position-note b{color:var(--ink);}
+  .subhead{font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-3); font-weight:600; margin:28px 0 12px;}
+  .scale-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .scale-table th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 10px; font-weight:600;}
+  .scale-table td{padding:10px 10px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+  .scale-table td.name{color:var(--ink); font-weight:600;}
+  .bar-cell{display:flex; align-items:center; gap:8px;}
+  .bar-track{flex:1; height:6px; background:var(--panel-2); border-radius:3px; overflow:hidden; max-width:120px; border:1px solid var(--line);}
+  .bar-fill{height:100%; background:var(--steel);}
+  .bar-fill.sand-fill{background:var(--sand);}
+  .callout{
+    background:var(--panel-2); border:1px solid var(--line); border-left:2px solid var(--steel);
+    border-radius:0 8px 8px 0; padding:14px 16px; font-size:13px; color:var(--ink-2); margin-top:18px;
+  }
+  .callout b{color:var(--ink);}
+
+  /* sentiment */
+  .sent-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .sent-col{border-radius:10px; padding:18px 20px; border:1px solid var(--line);}
+  .sent-col.bull{background:var(--green-bg);}
+  .sent-col.bear{background:var(--red-bg);}
+  .sent-head{font-size:13px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;}
+  .sent-col.bull .sent-head{color:var(--green);}
+  .sent-col.bear .sent-head{color:var(--red);}
+  .sent-col ul{margin:0; padding-left:16px; font-size:13px; color:var(--ink-2);}
+  .sent-col li{margin-bottom:8px;}
+  .chart-box{margin-top:20px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 20px;}
+  .chart-box .chart-title{font-size:12.5px; color:var(--ink-3); margin-bottom:12px;}
+
+  footer{padding:26px 0 10px; font-size:11.5px; color:var(--ink-3); line-height:1.6;}
+  footer b{color:var(--ink-2);}
+
+  @media (max-width:720px){
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+    .snap-grid, .rating-cards, .uc-grid, .sent-grid{grid-template-columns:1fr;}
+    h1{font-size:26px;}
+  }
+
+/* --- market hub additions --- */
+.topnav{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+.back-link{font-size:12.5px; color:var(--steel); text-decoration:none; font-weight:600;}
+.back-link:hover{text-decoration:underline;}
+.btn{
+  display:inline-block; font-size:12.5px; font-weight:600; color:#fff; background:var(--ink);
+  padding:8px 14px; border-radius:8px; text-decoration:none; border:1px solid var(--ink);
+}
+.btn:hover{background:var(--sand); border-color:var(--sand);}
+.btn.secondary{background:var(--panel); color:var(--ink); border:1px solid var(--line);}
+.btn.secondary:hover{background:var(--panel-2); border-color:var(--sand-dim); color:var(--sand);}
+.btn-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;}
+
+.vendor-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.vcard{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column;}
+.vcard-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;}
+.vcard-name{font-size:16px; font-weight:700; color:var(--ink); text-decoration:none;}
+.vcard-name:hover{color:var(--sand);}
+.vcard-cat{font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--sand); font-weight:700; margin-bottom:6px;}
+.vcard-desc{font-size:12.5px; color:var(--ink-2); flex:1; margin-bottom:12px;}
+.vcard-kpi{background:var(--panel-2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:12px;}
+.vcard-kpi .k-num{font-size:15px; font-weight:700; color:var(--ink);}
+.vcard-kpi .k-lbl{font-size:10.5px; color:var(--ink-3);}
+.vcard-actions{display:flex; gap:6px;}
+.vcard-actions a{flex:1; text-align:center; font-size:11.5px; padding:7px 8px;}
+
+.matrix-table{width:100%; border-collapse:collapse; font-size:12px;}
+.matrix-table th{text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.02em; color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 8px; font-weight:600; background:var(--panel);}
+.matrix-table td{padding:9px 8px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+.matrix-table td.mname{color:var(--ink); font-weight:600; white-space:nowrap;}
+.matrix-table tr:nth-child(even) td{background:var(--panel-2);}
+.matrix-table a{color:var(--steel); text-decoration:none; font-weight:600;}
+.matrix-table a:hover{text-decoration:underline;}
+
+@media (max-width:900px){
+  .vendor-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:600px){
+  .vendor-grid{grid-template-columns:1fr;}
+}
+
+  /* ============================================================
+     Tracker app components — appended to shared.css at build time.
+     Uses the existing palette variables only; no new colours.
+     ============================================================ */
+
+  /* --- primary nav across the app --- */
+  .appnav{
+    display:flex; flex-wrap:wrap; gap:4px; margin-bottom:16px;
+    border-bottom:1px solid var(--line); padding-bottom:0;
+  }
+  .appnav a{
+    font-size:13px; font-weight:600; color:var(--ink-3); text-decoration:none;
+    padding:9px 14px; border-radius:7px 7px 0 0; border:1px solid transparent;
+    border-bottom:none; position:relative; top:1px;
+  }
+  .appnav a:hover{color:var(--ink); background:var(--panel-2);}
+  .appnav a.current{
+    color:var(--ink); background:var(--panel); border-color:var(--line);
+    border-bottom:1px solid var(--panel);
+  }
+
+  /* --- filter bar --- */
+  .filterbar{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; margin-bottom:20px;
+  }
+  .filterbar h4{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--ink-3); margin:0 0 10px; font-weight:600;
+  }
+  .fchips{display:flex; flex-wrap:wrap; gap:6px;}
+  .fchip{
+    font-size:12.5px; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--ink-2); padding:6px 11px; border-radius:16px; cursor:pointer;
+    user-select:none; transition:none;
+  }
+  .fchip:hover{border-color:var(--sand-dim); color:var(--ink);}
+  .fchip.on{background:var(--sand); border-color:var(--sand); color:#fff; font-weight:600;}
+  .fchip .n{opacity:.65; font-size:11px; margin-left:4px;}
+  .filter-meta{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    margin-top:14px; padding-top:12px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--ink-3);
+  }
+  .filter-meta b{color:var(--ink);}
+  .linkbtn{
+    background:none; border:none; color:var(--steel); font-size:12.5px;
+    font-weight:600; cursor:pointer; padding:0; font-family:inherit;
+  }
+  .linkbtn:hover{text-decoration:underline;}
+  .searchbox{
+    flex:1; min-width:180px; font-family:inherit; font-size:13px;
+    padding:7px 11px; border:1px solid var(--line); border-radius:7px;
+    background:var(--panel-2); color:var(--ink);
+  }
+  .searchbox:focus{outline:none; border-color:var(--sand-dim); background:var(--panel);}
+
+  /* --- vendor card additions --- */
+  .vcard-tags{display:flex; flex-wrap:wrap; gap:4px; margin:10px 0 0;}
+  .tag{
+    font-size:11px; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--ink-3); padding:3px 8px; border-radius:12px;
+  }
+  .badge{
+    font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+    padding:3px 8px; border-radius:5px; white-space:nowrap;
+  }
+  .badge.full{background:var(--green-bg); color:var(--green);}
+  .badge.pending{background:var(--panel-2); color:var(--ink-3); border:1px solid var(--line);}
+  .badge.score{background:var(--panel-2); color:var(--ink); border:1px solid var(--line);}
+  .vcard-top{gap:8px; align-items:flex-start;}
+
+  /* --- generic data table --- */
+  .dtable{width:100%; border-collapse:collapse; font-size:13px;}
+  .dtable th{
+    text-align:left; font-size:11.5px; color:var(--ink-3); font-weight:600;
+    border-bottom:1px solid var(--line); padding:9px 10px; background:var(--panel);
+    position:sticky; top:0; z-index:2;
+  }
+  .dtable td{
+    padding:10px; border-bottom:1px solid var(--line); color:var(--ink-2);
+    vertical-align:top;
+  }
+  .dtable tr:nth-child(even) td{background:var(--panel-2);}
+  .dtable td.vname{color:var(--ink); font-weight:600;}
+  .dtable a{color:var(--steel); text-decoration:none; font-weight:600;}
+  .dtable a:hover{text-decoration:underline;}
+  .tscroll{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    overflow:auto; max-height:70vh;
+  }
+
+  /* --- status pills --- */
+  .pill{
+    font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:12px;
+    white-space:nowrap; display:inline-block;
+  }
+  .pill.s-live{background:var(--green-bg); color:var(--green);}
+  .pill.s-active{background:#EAF1F5; color:var(--steel);}
+  .pill.s-early{background:var(--panel-2); color:var(--ink-3); border:1px solid var(--line);}
+  .pill.s-cold{background:var(--red-bg); color:var(--red);}
+
+  /* --- data-loading states --- */
+  .loadbar{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--sand); border-radius:10px;
+    padding:14px 18px; margin-bottom:20px; font-size:13px; color:var(--ink-2);
+  }
+  .loadbar.ok{border-left-color:var(--green);}
+  .loadbar.warn{border-left-color:var(--amber);}
+  .loadbar .grow{flex:1; min-width:200px;}
+  .loadbar b{color:var(--ink);}
+  .empty{
+    text-align:center; padding:48px 24px; color:var(--ink-3); font-size:13.5px;
+    background:var(--panel); border:1px dashed var(--line); border-radius:12px;
+  }
+  .empty b{display:block; color:var(--ink); font-size:15px; margin-bottom:6px;}
+
+  /* --- scorecard --- */
+  .score-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .scard{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px;
+  }
+  .scard-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .scard-name{font-size:15px; font-weight:700; color:var(--ink); text-decoration:none;}
+  .scard-name:hover{color:var(--sand);}
+  .scard-score{font-size:26px; font-weight:700; color:var(--sand); line-height:1;}
+  .scard-score .of{font-size:12px; color:var(--ink-3); font-weight:600;}
+  .scard-sub{font-size:12px; color:var(--ink-3); margin:4px 0 14px;}
+  .sbar{margin-bottom:9px;}
+  .sbar-lbl{display:flex; justify-content:space-between; font-size:11.5px; color:var(--ink-3); margin-bottom:3px;}
+  .sbar-lbl b{color:var(--ink-2); font-weight:600;}
+  .sbar-track{height:5px; background:var(--panel-2); border:1px solid var(--line); border-radius:3px; overflow:hidden;}
+  .sbar-fill{height:100%; background:var(--sand-dim);}
+  .scard-foot{
+    margin-top:12px; padding-top:11px; border-top:1px solid var(--line);
+    font-size:12px; color:var(--ink-3);
+  }
+  .override-note{color:var(--amber); font-weight:600;}
+
+  /* --- contact / baseball cards --- */
+  .card-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .pcard{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px; display:flex; flex-direction:column; gap:12px; text-decoration:none;
+  }
+  .pcard:hover{border-color:var(--sand-dim);}
+  .pcard-head{display:flex; gap:13px; align-items:center;}
+  .mono{
+    width:46px; height:46px; flex:none; border-radius:50%;
+    background:var(--sand); color:#fff; font-weight:700; font-size:16px;
+    display:flex; align-items:center; justify-content:center; letter-spacing:.02em;
+  }
+  .mono.alt{background:var(--steel);}
+  .pcard-name{font-size:15px; font-weight:700; color:var(--ink); line-height:1.25;}
+  .pcard-role{font-size:12px; color:var(--ink-3); margin-top:2px;}
+  .pcard-co{
+    font-size:11px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--sand); font-weight:700;
+  }
+  .pcard-body{font-size:12.5px; color:var(--ink-2); line-height:1.5;}
+  .pcard-foot{
+    margin-top:auto; padding-top:11px; border-top:1px solid var(--line);
+    display:flex; gap:10px; flex-wrap:wrap; font-size:12px;
+  }
+  .pcard-foot a, .pcard-foot span{color:var(--steel); font-weight:600; text-decoration:none;}
+  .pcard-foot span.muted{color:var(--ink-3); font-weight:400;}
+
+  /* --- person detail page --- */
+  .pdetail{display:grid; grid-template-columns:1fr 300px; gap:32px;}
+  .fact-list p{font-size:13px; color:var(--ink-2); margin:0 0 9px;}
+  .fact-list p b{color:var(--ink); font-weight:600;}
+  .private-block{
+    background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--steel); border-radius:10px; padding:16px 18px;
+  }
+  .private-block h4{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--steel); margin:0 0 10px; font-weight:700;
+  }
+
+  /* --- gip engagement panel injected into vendor dashboards --- */
+  .gip-panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; margin-top:4px;
+  }
+  .gip-summary{
+    display:flex; gap:24px; flex-wrap:wrap; align-items:center;
+    padding-bottom:14px; margin-bottom:14px; border-bottom:1px solid var(--line);
+  }
+  .gip-stat .n{font-size:20px; font-weight:700; color:var(--ink);}
+  .gip-stat .l{font-size:11px; color:var(--ink-3); margin-top:2px;}
+
+  @media (max-width:900px){
+    .score-grid, .card-grid{grid-template-columns:repeat(2,1fr);}
+    .pdetail{grid-template-columns:1fr;}
+  }
+  @media (max-width:600px){
+    .score-grid, .card-grid{grid-template-columns:1fr;}
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+  }
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="topnav">
+      <a class="back-link" href="index.html">&larr; All vendors</a>
+      &nbsp;&nbsp;<a class="back-link" href="tracker.html">Engagement tracker</a>
+      &nbsp;&nbsp;<a class="back-link" href="scorecard.html">Scorecard</a>
+      &nbsp;&nbsp;<a class="back-link" href="people.html">All contacts</a>
+    </div>
+    <div class="kicker"><span class="dot"></span>VENDOR PROFILE &nbsp;·&nbsp; ENTERPRISE RESOURCE PLANNING &AMP; BUSINESS AI &nbsp;·&nbsp; SEPTEMBER 11, 2026</div>
+    <h1><a href="https://www.sap.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">SAP ↗</a></h1>
+    <p class="tagline">AI is now in two-thirds of cloud orders — and SAP is rebuilding its roadmap around agents rather than features</p>
+    <div class="kpi-row"><div class="kpi"><div class="num">1972</div><div class="lbl">Founded</div></div><div class="kpi"><div class="num">€9.7B</div><div class="lbl">Q4 2025 revenue</div></div><div class="kpi"><div class="num">€77B</div><div class="lbl">Total cloud backlog</div></div><div class="kpi"><div class="num">2/3</div><div class="lbl">Cloud orders with AI</div></div><div class="kpi"><div class="num">€8.24B</div><div class="lbl">Free cash flow</div></div></div>
+    <div class="btn-row">
+      <a class="btn" href="sap-one-sheet.pdf" download>Download one-pager (PDF) &darr;</a>
+      <a class="btn secondary" href="https://www.sap.com" target="_blank" rel="noopener">Visit website ↗</a>
+      <a class="btn secondary" href="market-overview.html">← All vendors in this market</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>Company snapshot</h2></div>
+    <div class="snap-grid">
+      <div>
+        <p>The dominant ERP vendor, with a record €77B total cloud backlog and Business AI included in two-thirds of Q4 2025 cloud order entry. Joule customer numbers grew ninefold across 2025, and SAP is now shifting its product roadmap from features toward autonomous agents.</p>
+        <p><b>Offering:</b> S/4HANA and the Cloud ERP Suite delivered through RISE with SAP and GROW with SAP, plus Business Data Cloud, the Business Technology Platform, and Business AI — the Joule assistant, Joule Work, the Business AI Platform, and the Autonomous Suite agents.</p>
+        
+      </div>
+      <div>
+        <div class="side-block">
+          <h4>Key facts</h4>
+          <p style="margin:0 0 6px;"><b>Founded:</b> 1972</p>
+          <p style="margin:0 0 6px;"><b>HQ:</b> Walldorf, Germany</p>
+          <p style="margin:0 0 6px;"><b>Ownership:</b> Public (XETRA: SAP; NYSE: SAP)</p>
+          <p style="margin:0 0 6px;"><b>Revenue:</b> Q4 2025 revenue of €9.7B, up 9%, with cloud revenue of €5.6B, up 26%, and Cloud ERP Suite at €4.9B, up 23%. Total cloud backlog reached a record €77B, up 30% at constant currency. Free cash flow nearly doubled to €8.24B</p>
+          <p style="margin:0;"><b>Web:</b> <a href="https://www.sap.com" target="_blank" rel="noopener" style="color:var(--steel);">www.sap.com</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/company/sap" target="_blank" rel="noopener" style="color:var(--steel);">LinkedIn ↗</a></p>
+        </div>
+        <div class="side-block">
+          <h4>Key people</h4>
+          <div class="chip-row"><span class="chip"><b>Christian Klein</b> — Chief Executive Officer</span><span class="chip"><b>Dominik Asam</b> — Chief Financial Officer</span></div>
+        </div>
+        <div class="side-block">
+          <h4>Named customers (public sources)</h4>
+          <div class="chip-row"><span class="chip">Siemens</span></div>
+        </div>
+        <div class="side-block">
+          <h4>Capabilities</h4>
+          <div class="grade-row">
+            <div class="grade"><div class="letter" style="font-size:13px;">Via partners</div><div class="cap">Digital twin</div></div>
+            <div class="grade"><div class="letter" style="font-size:13px;">Yes</div><div class="cap">Agentic / GenAI</div></div>
+          </div>
+          <div style="margin-top:10px;" class="qual-note">Primary buyer: CFO, COO and CIO in asset-heavy and process-heavy industries</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Use cases &amp; reported metrics</h2></div>
+    <div class="sec-note">All impact figures below are vendor- or partner-reported and have not been independently audited.</div>
+    <div class="uc-grid">
+      <a class="uc-card" href="https://www.asug.com/insights/q4-and-fy-2025-sap-delivers-record-cloud-growth-as-business-ai-fuels-momentum" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">AI attach rate</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">Business AI sold as part of cloud deals rather than as a separate upsell, with AI features included in cloud order entry as standard.</div>
+        <div class="uc-metric">Business AI included in two-thirds of Q4 2025 cloud order entry, a 20% increase on the prior quarter; 90% of the 50 largest deals included AI or Business Data Cloud</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://www.cxtoday.com/ai-automation-in-cx/sap-business-ai-q4-2025-earnings/" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Professional services productivity</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">Joule for Consultants at Siemens, where the assistant works across the SAP application suite with access to business data that general-purpose models cannot reach.</div>
+        <div class="uc-metric">Siemens consultants reinvesting 25% of their weekly time into higher-value work; Joule customer numbers grew ninefold across 2025</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://erp.today/sap-q4-2025-earnings-cloud-growth-analysis/" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Contracted backlog</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">Total cloud backlog tracked as the long-lead indicator, built on RISE and GROW with SAP adoption across industries and regions.</div>
+        <div class="uc-metric">Record €77B total cloud backlog at end-2025, up 30% at constant currency; nearly two-thirds of deals above €1M involved four or more lines of business, a 25-percentage-point increase</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://erp.today/sap-ai-pricing-outcome-based-erp-economics/" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Agentic roadmap</span><span class="uc-status">Announced</span></div>
+        <div class="uc-deploy">The Autonomous Enterprise strategy, with the Business AI Platform and Joule Work launching in Q3 2026, close to 50 assistants by the end of Q3, and more than 400 Autonomous Suite agents by year end, plus three further ERP migration assistants with ten underlying agents.</div>
+        <div class="uc-metric">Development backlog deliberately reshuffled from customer feature requests toward agentic AI; Klein has described moving toward value-based and outcome-based pricing tied to agents</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Competitive landscape</h2></div>
+    <table class="comp-table">
+      <thead><tr><th style="width:28%;">Vendor</th><th style="width:44%;">Category</th><th>Revenue (latest/est.)</th></tr></thead>
+      <tbody><tr><td class="mname"><a href="adobe-dashboard.html">Adobe</a></td><td>Creative, document &amp; marketing software</td><td>$23.8B (FY25)</td></tr><tr><td class="mname"><a href="oracle-dashboard.html">Oracle</a></td><td>Database, ERP applications &amp; AI cloud infrastructure</td><td>$67.4B (FY26)</td></tr><tr><td class="mname"><a href="salesforce-dashboard.html">Salesforce</a></td><td>CRM, data platform &amp; agentic AI</td><td>$41.5B (FY26)</td></tr><tr><td class="mname"><a href="servicenow-dashboard.html">ServiceNow</a></td><td>Workflow platform &amp; AI control tower</td><td>$15.8B (FY26 guide)</td></tr><tr><td class="mname"><a href="workday-dashboard.html">Workday</a></td><td>HCM &amp; financial management</td><td>$9.6B (FY26)</td></tr>
+      </tbody>
+    </table>
+    
+    <div class="position-note"><b>Where it sits:</b> SAP's structural argument is the one that matters most for asset-heavy businesses: general-purpose models cannot reach the business data that sits inside an ERP, and Joule can. Klein's own example is a customer win where SAP replaced a competitor by combining LLMs with its business data foundation to reinvent last-mile delivery logistics — a capability he argues competitors without deep ERP data cannot replicate. Two forward signals worth tracking. SAP is moving toward value-based and outcome-based pricing tied to autonomous agents, away from traditional ERP licensing logic. And it has deliberately reshuffled its development backlog away from customer feature requests toward agents — which means PortCos expecting a steady stream of conventional enhancements may be disappointed.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>GIP &amp; BlackRock connections</h2></div>
+    <div class="sec-note">Global Infrastructure Partners (GIP) became a wholly-owned BlackRock subsidiary in October 2024 and now operates as BlackRock's dedicated infrastructure-investment arm. Ownership stakes below are standard institutional/index-fund positions unless otherwise noted — that is a capital-markets fact, not evidence of an operating relationship.</div>
+    <table class="scale-table">
+      <thead><tr><th style="width:22%;">Entity</th><th>Possible connection</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Global Infrastructure Partners</td><td>No publicly disclosed GIP relationship. SAP is the most likely core ERP at asset-heavy PortCos, which makes it a Corporate Functions Efficiency play in the reference model, and potentially an Asset Optimization one wherever operational data already sits inside the SAP estate.</td></tr>
+        <tr><td class="name">BlackRock</td><td>No publicly disclosed operating relationship.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Sentiment</h2></div>
+
+    <div class="subhead">Customer sentiment</div>
+    <div class="qual-note" style="margin-bottom:18px;">Buying behaviour is the strongest evidence and it points to consolidation onto the suite: nearly two-thirds of deals above €1M involved four or more lines of business, a 25-point jump, which supports SAP's best-of-suite argument over best-of-breed. The risk sits in expectation management — SAP has redirected its roadmap toward agents, and delivery teams that treat AI as a later phase risk disappointing customers who bought specifically for it.</div>
+
+    <div class="subhead">Market &amp; analyst sentiment</div>
+    <div class="sent-grid">
+      <div class="sent-col bull">
+        <div class="sent-head">What supports the story</div>
+        <ul><li>Record €77B total cloud backlog, up 30% at constant currency, giving strong multi-year visibility</li><li>Business AI attached to two-thirds of Q4 cloud orders — the highest disclosed AI attach rate of any vendor in this app</li><li>Free cash flow nearly doubled to €8.24B, funding the agentic buildout from operations</li><li>Deep ERP data access is a defensible moat that general-purpose model providers cannot replicate</li></ul>
+      </div>
+      <div class="sent-col bear">
+        <div class="sent-head">What to pressure-test</div>
+        <ul><li>The share price fell sharply on Q4 earnings day — in some markets the largest single-day drop since 2020 — on near-term cloud backlog dynamics</li><li>Current cloud backlog growth decelerated through mid-2025, from 29% to 22%, which Klein attributed to tariff-driven uncertainty</li><li>Redirecting the development backlog from features to agents risks disappointing customers on conventional roadmap commitments</li><li>Outcome-based pricing is easy to announce and hard to operationalise, particularly across a partner-delivered implementation channel</li><li>Headcount is not disclosed in the results reviewed, limiting any read on delivery capacity</li></ul>
+      </div>
+    </div>
+
+    <div class="subhead">Employee sentiment</div>
+    <div class="qual-note">Not covered in this pass — headcount was not disclosed in the results reviewed and no employer-review data was gathered. One adjacent signal worth noting: SAP has publicly discussed AI replacing parts of its own coding work, which customers should read as a statement about where delivery economics are heading.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">06</span><h2>GIP engagement</h2></div>
+    <div class="sec-note">Live from your tracker workbook. Nothing here is published or uploaded.</div>
+    <div id="gip-loadbar" class="loadbar">Reading gip-tracker.xlsx…</div>
+    <div class="gip-panel" id="gip-panel" data-vendor="SAP"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">07</span><h2>Contacts</h2></div>
+    <div class="sec-note">Each card opens that person's dashboard, which links to their downloadable
+    white paper. <a href="people.html?vendor=sap" style="color:var(--steel);">All SAP contacts &rarr;</a>
+    &nbsp;·&nbsp; <a href="people.html" style="color:var(--steel);">All contacts across every vendor &rarr;</a></div>
+    <div class="card-grid" id="gip-people"></div>
+    <div id="nopeople" class="empty" style="display:none;"><b>No contacts on file</b>Add rows for SAP on the People sheet.</div>
+  </section>
+
+  <footer>
+    <b>Sources:</b> SAP public filings/website, company fact sheets, Wikipedia, PitchBook/Crunchbase/Datanyze/BuiltIn company profiles, Glassdoor employer reviews, vendor case studies and press releases, SEC Schedule 13D/13G/13F filings, and BlackRock/GIP corporate disclosures, as of September 2026. Figures marked “est.” or “not disclosed” are third-party estimates or unavailable, not company-confirmed — validate in diligence.<br>
+    Part of the <a href="market-overview.html" style="color:var(--steel);">Physical AI / Industrial AI for Critical Infrastructure market landscape</a>.
+  </footer>
+
+</div>
+<script src="xlsx.full.min.js"></script>
+<script src="gip-loader.js"></script>
+<script src="app-data.js"></script>
+<script src="gip-panel.js"></script>
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UiPath — Vendor Profile</title>
+<style>
+
+  :root{
+    --bg:#EFF0F3; --panel:#FFFFFF; --panel-2:#F5F6F8; --line:#DCDFE4;
+    --ink:#14161C; --ink-2:#3A3F4B; --ink-3:#5B6270;
+    --sand:#A5702B; --sand-dim:#C79256; --steel:#2B6684;
+    --green:#1F7A4D; --green-bg:#E6F5EC; --red:#B23A2E; --red-bg:#FBEAE8; --amber:#8A5B10;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px 60px;}
+
+  header.hero{
+    background:linear-gradient(180deg,#F5F6F8,#EFF0F3);
+    border-bottom:1px solid var(--line);
+    padding:40px 24px 28px;
+  }
+  .hero-inner{max-width:1080px; margin:0 auto;}
+  .kicker{
+    font-size:12.5px; color:var(--sand); letter-spacing:.02em; font-weight:600;
+    display:flex; gap:8px; align-items:center; margin-bottom:10px;
+  }
+  .kicker .dot{width:5px; height:5px; border-radius:50%; background:var(--sand);}
+  h1{font-size:34px; margin:0 0 8px; font-weight:700; letter-spacing:-0.01em; color:var(--ink);}
+  .tagline{color:var(--ink-2); font-size:15px; max-width:640px; margin:0;}
+  .tagline a{color:var(--steel); text-decoration:none;}
+
+  .kpi-row{
+    display:grid; grid-template-columns:repeat(7,1fr); gap:10px;
+    margin-top:26px;
+  }
+  .kpi{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 14px; text-align:left;}
+  .kpi .num{font-size:20px; font-weight:700; color:var(--ink);}
+  .kpi .lbl{font-size:11px; color:var(--ink-3); margin-top:4px;}
+
+  section{padding:38px 0; border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .sec-head{display:flex; align-items:baseline; gap:10px; margin-bottom:18px;}
+  .sec-num{color:var(--sand); font-weight:700; font-size:13px;}
+  h2{font-size:19px; margin:0; font-weight:700; color:var(--ink);}
+  .sec-note{color:var(--ink-3); font-size:12.5px; margin:-8px 0 18px;}
+
+  /* snapshot */
+  .snap-grid{display:grid; grid-template-columns:1.35fr 1fr; gap:32px;}
+  .snap-grid p{font-size:14px; color:var(--ink-2); margin:0 0 14px;}
+  .snap-grid p b{color:var(--ink); font-weight:600;}
+  .side-block{margin-bottom:18px;}
+  .side-block h4{font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-3); margin:0 0 8px; font-weight:600;}
+  .chip-row{display:flex; flex-wrap:wrap; gap:6px;}
+  .chip{
+    font-size:12.5px; background:var(--panel); border:1px solid var(--line);
+    color:var(--ink-2); padding:5px 10px; border-radius:6px;
+  }
+
+  /* ratings */
+  .rating-cards{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;}
+  .rcard{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 20px;}
+  .rcard .src{font-size:12px; color:var(--ink-3); margin-bottom:10px;}
+  .rcard .big{font-size:28px; font-weight:700; display:flex; align-items:baseline; gap:8px; color:var(--ink);}
+  .rcard .big small{font-size:13px; color:var(--ink-3); font-weight:400;}
+  .meter{height:8px; background:var(--panel-2); border-radius:4px; margin:12px 0 10px; overflow:hidden;}
+  .meter > div{height:100%; background:var(--sand); border-radius:4px;}
+  .stat-line{display:flex; justify-content:space-between; font-size:12.5px; color:var(--ink-2); padding:4px 0; border-top:1px solid var(--line);}
+  .grade-row{display:flex; gap:8px; margin-top:12px;}
+  .grade{
+    flex:1; text-align:center; border-radius:8px; padding:10px 6px; border:1px solid var(--line); background:var(--panel-2);
+  }
+  .grade .letter{font-size:18px; font-weight:700; color:var(--sand);}
+  .grade.weak .letter{color:var(--red);}
+  .grade .cap{font-size:10.5px; color:var(--ink-3); margin-top:3px;}
+  .qual-note{font-size:12.5px; color:var(--ink-2); background:var(--panel-2); border-left:2px solid var(--sand); padding:10px 12px; border-radius:0 6px 6px 0;}
+
+  /* use cases */
+  .uc-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  a.uc-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 18px;
+    display:block; text-decoration:none; color:inherit; transition:border-color .15s, background .15s;
+  }
+  a.uc-card:hover{border-color:var(--sand-dim); background:var(--panel-2);}
+  a.uc-card:hover .uc-deploy{color:var(--sand);}
+  .uc-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;}
+  .uc-sector{font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--sand); font-weight:700;}
+  .uc-status-group{display:flex; align-items:center; gap:6px;}
+  .uc-status{font-size:10.5px; background:var(--green-bg); color:var(--green); padding:2px 8px; border-radius:20px; font-weight:600;}
+  .uc-link{font-size:11px; color:var(--ink-3);}
+  .uc-deploy{font-size:13.5px; color:var(--ink); font-weight:600; margin-bottom:6px; transition:color .15s;}
+  .uc-metric{font-size:12.5px; color:var(--ink-2);}
+  .uc-src{font-size:11px; color:var(--ink-3); margin-top:8px; padding-top:8px; border-top:1px solid var(--line);}
+
+  /* competitive */
+  .comp-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .comp-table th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 10px; font-weight:600;
+  }
+  .comp-table td{padding:10px 10px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+  .comp-table td.name{color:var(--ink); font-weight:600;}
+  .tag-direct{color:var(--sand); font-size:11px; font-weight:700;}
+  .tag-adjacent{color:var(--steel); font-size:11px; font-weight:700;}
+  .position-note{font-size:13.5px; color:var(--ink-2); margin-top:16px; padding-top:16px; border-top:1px solid var(--line);}
+  .position-note b{color:var(--ink);}
+  .subhead{font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-3); font-weight:600; margin:28px 0 12px;}
+  .scale-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .scale-table th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 10px; font-weight:600;}
+  .scale-table td{padding:10px 10px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+  .scale-table td.name{color:var(--ink); font-weight:600;}
+  .bar-cell{display:flex; align-items:center; gap:8px;}
+  .bar-track{flex:1; height:6px; background:var(--panel-2); border-radius:3px; overflow:hidden; max-width:120px; border:1px solid var(--line);}
+  .bar-fill{height:100%; background:var(--steel);}
+  .bar-fill.sand-fill{background:var(--sand);}
+  .callout{
+    background:var(--panel-2); border:1px solid var(--line); border-left:2px solid var(--steel);
+    border-radius:0 8px 8px 0; padding:14px 16px; font-size:13px; color:var(--ink-2); margin-top:18px;
+  }
+  .callout b{color:var(--ink);}
+
+  /* sentiment */
+  .sent-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .sent-col{border-radius:10px; padding:18px 20px; border:1px solid var(--line);}
+  .sent-col.bull{background:var(--green-bg);}
+  .sent-col.bear{background:var(--red-bg);}
+  .sent-head{font-size:13px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px;}
+  .sent-col.bull .sent-head{color:var(--green);}
+  .sent-col.bear .sent-head{color:var(--red);}
+  .sent-col ul{margin:0; padding-left:16px; font-size:13px; color:var(--ink-2);}
+  .sent-col li{margin-bottom:8px;}
+  .chart-box{margin-top:20px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 20px;}
+  .chart-box .chart-title{font-size:12.5px; color:var(--ink-3); margin-bottom:12px;}
+
+  footer{padding:26px 0 10px; font-size:11.5px; color:var(--ink-3); line-height:1.6;}
+  footer b{color:var(--ink-2);}
+
+  @media (max-width:720px){
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+    .snap-grid, .rating-cards, .uc-grid, .sent-grid{grid-template-columns:1fr;}
+    h1{font-size:26px;}
+  }
+
+/* --- market hub additions --- */
+.topnav{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+.back-link{font-size:12.5px; color:var(--steel); text-decoration:none; font-weight:600;}
+.back-link:hover{text-decoration:underline;}
+.btn{
+  display:inline-block; font-size:12.5px; font-weight:600; color:#fff; background:var(--ink);
+  padding:8px 14px; border-radius:8px; text-decoration:none; border:1px solid var(--ink);
+}
+.btn:hover{background:var(--sand); border-color:var(--sand);}
+.btn.secondary{background:var(--panel); color:var(--ink); border:1px solid var(--line);}
+.btn.secondary:hover{background:var(--panel-2); border-color:var(--sand-dim); color:var(--sand);}
+.btn-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;}
+
+.vendor-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.vcard{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column;}
+.vcard-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;}
+.vcard-name{font-size:16px; font-weight:700; color:var(--ink); text-decoration:none;}
+.vcard-name:hover{color:var(--sand);}
+.vcard-cat{font-size:10.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--sand); font-weight:700; margin-bottom:6px;}
+.vcard-desc{font-size:12.5px; color:var(--ink-2); flex:1; margin-bottom:12px;}
+.vcard-kpi{background:var(--panel-2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:12px;}
+.vcard-kpi .k-num{font-size:15px; font-weight:700; color:var(--ink);}
+.vcard-kpi .k-lbl{font-size:10.5px; color:var(--ink-3);}
+.vcard-actions{display:flex; gap:6px;}
+.vcard-actions a{flex:1; text-align:center; font-size:11.5px; padding:7px 8px;}
+
+.matrix-table{width:100%; border-collapse:collapse; font-size:12px;}
+.matrix-table th{text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.02em; color:var(--ink-3); border-bottom:1px solid var(--line); padding:8px 8px; font-weight:600; background:var(--panel);}
+.matrix-table td{padding:9px 8px; border-bottom:1px solid var(--line); color:var(--ink-2); vertical-align:top;}
+.matrix-table td.mname{color:var(--ink); font-weight:600; white-space:nowrap;}
+.matrix-table tr:nth-child(even) td{background:var(--panel-2);}
+.matrix-table a{color:var(--steel); text-decoration:none; font-weight:600;}
+.matrix-table a:hover{text-decoration:underline;}
+
+@media (max-width:900px){
+  .vendor-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:600px){
+  .vendor-grid{grid-template-columns:1fr;}
+}
+
+  /* ============================================================
+     Tracker app components — appended to shared.css at build time.
+     Uses the existing palette variables only; no new colours.
+     ============================================================ */
+
+  /* --- primary nav across the app --- */
+  .appnav{
+    display:flex; flex-wrap:wrap; gap:4px; margin-bottom:16px;
+    border-bottom:1px solid var(--line); padding-bottom:0;
+  }
+  .appnav a{
+    font-size:13px; font-weight:600; color:var(--ink-3); text-decoration:none;
+    padding:9px 14px; border-radius:7px 7px 0 0; border:1px solid transparent;
+    border-bottom:none; position:relative; top:1px;
+  }
+  .appnav a:hover{color:var(--ink); background:var(--panel-2);}
+  .appnav a.current{
+    color:var(--ink); background:var(--panel); border-color:var(--line);
+    border-bottom:1px solid var(--panel);
+  }
+
+  /* --- filter bar --- */
+  .filterbar{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; margin-bottom:20px;
+  }
+  .filterbar h4{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--ink-3); margin:0 0 10px; font-weight:600;
+  }
+  .fchips{display:flex; flex-wrap:wrap; gap:6px;}
+  .fchip{
+    font-size:12.5px; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--ink-2); padding:6px 11px; border-radius:16px; cursor:pointer;
+    user-select:none; transition:none;
+  }
+  .fchip:hover{border-color:var(--sand-dim); color:var(--ink);}
+  .fchip.on{background:var(--sand); border-color:var(--sand); color:#fff; font-weight:600;}
+  .fchip .n{opacity:.65; font-size:11px; margin-left:4px;}
+  .filter-meta{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    margin-top:14px; padding-top:12px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--ink-3);
+  }
+  .filter-meta b{color:var(--ink);}
+  .linkbtn{
+    background:none; border:none; color:var(--steel); font-size:12.5px;
+    font-weight:600; cursor:pointer; padding:0; font-family:inherit;
+  }
+  .linkbtn:hover{text-decoration:underline;}
+  .searchbox{
+    flex:1; min-width:180px; font-family:inherit; font-size:13px;
+    padding:7px 11px; border:1px solid var(--line); border-radius:7px;
+    background:var(--panel-2); color:var(--ink);
+  }
+  .searchbox:focus{outline:none; border-color:var(--sand-dim); background:var(--panel);}
+
+  /* --- vendor card additions --- */
+  .vcard-tags{display:flex; flex-wrap:wrap; gap:4px; margin:10px 0 0;}
+  .tag{
+    font-size:11px; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--ink-3); padding:3px 8px; border-radius:12px;
+  }
+  .badge{
+    font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+    padding:3px 8px; border-radius:5px; white-space:nowrap;
+  }
+  .badge.full{background:var(--green-bg); color:var(--green);}
+  .badge.pending{background:var(--panel-2); color:var(--ink-3); border:1px solid var(--line);}
+  .badge.score{background:var(--panel-2); color:var(--ink); border:1px solid var(--line);}
+  .vcard-top{gap:8px; align-items:flex-start;}
+
+  /* --- generic data table --- */
+  .dtable{width:100%; border-collapse:collapse; font-size:13px;}
+  .dtable th{
+    text-align:left; font-size:11.5px; color:var(--ink-3); font-weight:600;
+    border-bottom:1px solid var(--line); padding:9px 10px; background:var(--panel);
+    position:sticky; top:0; z-index:2;
+  }
+  .dtable td{
+    padding:10px; border-bottom:1px solid var(--line); color:var(--ink-2);
+    vertical-align:top;
+  }
+  .dtable tr:nth-child(even) td{background:var(--panel-2);}
+  .dtable td.vname{color:var(--ink); font-weight:600;}
+  .dtable a{color:var(--steel); text-decoration:none; font-weight:600;}
+  .dtable a:hover{text-decoration:underline;}
+  .tscroll{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    overflow:auto; max-height:70vh;
+  }
+
+  /* --- status pills --- */
+  .pill{
+    font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:12px;
+    white-space:nowrap; display:inline-block;
+  }
+  .pill.s-live{background:var(--green-bg); color:var(--green);}
+  .pill.s-active{background:#EAF1F5; color:var(--steel);}
+  .pill.s-early{background:var(--panel-2); color:var(--ink-3); border:1px solid var(--line);}
+  .pill.s-cold{background:var(--red-bg); color:var(--red);}
+
+  /* --- data-loading states --- */
+  .loadbar{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--sand); border-radius:10px;
+    padding:14px 18px; margin-bottom:20px; font-size:13px; color:var(--ink-2);
+  }
+  .loadbar.ok{border-left-color:var(--green);}
+  .loadbar.warn{border-left-color:var(--amber);}
+  .loadbar .grow{flex:1; min-width:200px;}
+  .loadbar b{color:var(--ink);}
+  .empty{
+    text-align:center; padding:48px 24px; color:var(--ink-3); font-size:13.5px;
+    background:var(--panel); border:1px dashed var(--line); border-radius:12px;
+  }
+  .empty b{display:block; color:var(--ink); font-size:15px; margin-bottom:6px;}
+
+  /* --- scorecard --- */
+  .score-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .scard{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px;
+  }
+  .scard-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .scard-name{font-size:15px; font-weight:700; color:var(--ink); text-decoration:none;}
+  .scard-name:hover{color:var(--sand);}
+  .scard-score{font-size:26px; font-weight:700; color:var(--sand); line-height:1;}
+  .scard-score .of{font-size:12px; color:var(--ink-3); font-weight:600;}
+  .scard-sub{font-size:12px; color:var(--ink-3); margin:4px 0 14px;}
+  .sbar{margin-bottom:9px;}
+  .sbar-lbl{display:flex; justify-content:space-between; font-size:11.5px; color:var(--ink-3); margin-bottom:3px;}
+  .sbar-lbl b{color:var(--ink-2); font-weight:600;}
+  .sbar-track{height:5px; background:var(--panel-2); border:1px solid var(--line); border-radius:3px; overflow:hidden;}
+  .sbar-fill{height:100%; background:var(--sand-dim);}
+  .scard-foot{
+    margin-top:12px; padding-top:11px; border-top:1px solid var(--line);
+    font-size:12px; color:var(--ink-3);
+  }
+  .override-note{color:var(--amber); font-weight:600;}
+
+  /* --- contact / baseball cards --- */
+  .card-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .pcard{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px; display:flex; flex-direction:column; gap:12px; text-decoration:none;
+  }
+  .pcard:hover{border-color:var(--sand-dim);}
+  .pcard-head{display:flex; gap:13px; align-items:center;}
+  .mono{
+    width:46px; height:46px; flex:none; border-radius:50%;
+    background:var(--sand); color:#fff; font-weight:700; font-size:16px;
+    display:flex; align-items:center; justify-content:center; letter-spacing:.02em;
+  }
+  .mono.alt{background:var(--steel);}
+  .pcard-name{font-size:15px; font-weight:700; color:var(--ink); line-height:1.25;}
+  .pcard-role{font-size:12px; color:var(--ink-3); margin-top:2px;}
+  .pcard-co{
+    font-size:11px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--sand); font-weight:700;
+  }
+  .pcard-body{font-size:12.5px; color:var(--ink-2); line-height:1.5;}
+  .pcard-foot{
+    margin-top:auto; padding-top:11px; border-top:1px solid var(--line);
+    display:flex; gap:10px; flex-wrap:wrap; font-size:12px;
+  }
+  .pcard-foot a, .pcard-foot span{color:var(--steel); font-weight:600; text-decoration:none;}
+  .pcard-foot span.muted{color:var(--ink-3); font-weight:400;}
+
+  /* --- person detail page --- */
+  .pdetail{display:grid; grid-template-columns:1fr 300px; gap:32px;}
+  .fact-list p{font-size:13px; color:var(--ink-2); margin:0 0 9px;}
+  .fact-list p b{color:var(--ink); font-weight:600;}
+  .private-block{
+    background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--steel); border-radius:10px; padding:16px 18px;
+  }
+  .private-block h4{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--steel); margin:0 0 10px; font-weight:700;
+  }
+
+  /* --- gip engagement panel injected into vendor dashboards --- */
+  .gip-panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; margin-top:4px;
+  }
+  .gip-summary{
+    display:flex; gap:24px; flex-wrap:wrap; align-items:center;
+    padding-bottom:14px; margin-bottom:14px; border-bottom:1px solid var(--line);
+  }
+  .gip-stat .n{font-size:20px; font-weight:700; color:var(--ink);}
+  .gip-stat .l{font-size:11px; color:var(--ink-3); margin-top:2px;}
+
+  @media (max-width:900px){
+    .score-grid, .card-grid{grid-template-columns:repeat(2,1fr);}
+    .pdetail{grid-template-columns:1fr;}
+  }
+  @media (max-width:600px){
+    .score-grid, .card-grid{grid-template-columns:1fr;}
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+  }
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="topnav">
+      <a class="back-link" href="index.html">&larr; All vendors</a>
+      &nbsp;&nbsp;<a class="back-link" href="tracker.html">Engagement tracker</a>
+      &nbsp;&nbsp;<a class="back-link" href="scorecard.html">Scorecard</a>
+      &nbsp;&nbsp;<a class="back-link" href="people.html">All contacts</a>
+    </div>
+    <div class="kicker"><span class="dot"></span>VENDOR PROFILE &nbsp;·&nbsp; AGENTIC AUTOMATION &AMP; ORCHESTRATION &nbsp;·&nbsp; SEPTEMBER 11, 2026</div>
+    <h1><a href="https://www.uipath.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">UiPath ↗</a></h1>
+    <p class="tagline">Arguing that agents need deterministic automation underneath them — the execution layer, not the reasoning layer</p>
+    <div class="kpi-row"><div class="kpi"><div class="num">2005</div><div class="lbl">Founded</div></div><div class="kpi"><div class="num">$1.85B</div><div class="lbl">ARR (FY26)</div></div><div class="kpi"><div class="num">+11%</div><div class="lbl">ARR growth</div></div><div class="kpi"><div class="num">$481M</div><div class="lbl">Q4 revenue</div></div><div class="kpi"><div class="num">$150M</div><div class="lbl">Non-GAAP op income</div></div></div>
+    <div class="btn-row">
+      <a class="btn" href="uipath-one-sheet.pdf" download>Download one-pager (PDF) &darr;</a>
+      <a class="btn secondary" href="https://www.uipath.com" target="_blank" rel="noopener">Visit website ↗</a>
+      <a class="btn secondary" href="market-overview.html">← All vendors in this market</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>Company snapshot</h2></div>
+    <div class="snap-grid">
+      <div>
+        <p>$1.853B of ARR growing 11%, with the argument that enterprises scaling AI need something that executes reliably rather than something that reasons well. Dines frames UiPath as the execution layer enterprises trust for mission-critical processes in the agentic era.</p>
+        <p><b>Offering:</b> The UiPath Platform for Agentic Automation and Orchestration, combining deterministic robotic process automation with agentic AI and enterprise orchestration, plus built-in security and governance. Recent additions include pre-built agentic solutions by industry and the acquired WorkFusion agents for financial crime compliance.</p>
+        
+      </div>
+      <div>
+        <div class="side-block">
+          <h4>Key facts</h4>
+          <p style="margin:0 0 6px;"><b>Founded:</b> 2005 (in Romania)</p>
+          <p style="margin:0 0 6px;"><b>HQ:</b> New York, New York</p>
+          <p style="margin:0 0 6px;"><b>Ownership:</b> Public (NYSE: PATH)</p>
+          <p style="margin:0 0 6px;"><b>Revenue:</b> Q4 FY2026 revenue of $481M, up 14%, with ARR of $1.853B at 31 January 2026, up 11%. GAAP operating income of $80M and non-GAAP operating income of $150M. ARR grew steadily through the year — $1.693B, $1.723B, $1.782B, $1.853B</p>
+          <p style="margin:0;"><b>Web:</b> <a href="https://www.uipath.com" target="_blank" rel="noopener" style="color:var(--steel);">www.uipath.com</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/company/uipath" target="_blank" rel="noopener" style="color:var(--steel);">LinkedIn ↗</a></p>
+        </div>
+        <div class="side-block">
+          <h4>Key people</h4>
+          <div class="chip-row"><span class="chip"><b>Daniel Dines</b> — Founder, Chief Executive Officer &amp; Executive Chairman</span><span class="chip"><b>Raghu Malpani</b> — Chief Product &amp; Technology Officer</span></div>
+        </div>
+        <div class="side-block">
+          <h4>Named customers (public sources)</h4>
+          <div class="chip-row"></div>
+        </div>
+        <div class="side-block">
+          <h4>Capabilities</h4>
+          <div class="grade-row">
+            <div class="grade"><div class="letter" style="font-size:13px;">No</div><div class="cap">Digital twin</div></div>
+            <div class="grade"><div class="letter" style="font-size:13px;">Yes</div><div class="cap">Agentic / GenAI</div></div>
+          </div>
+          <div style="margin-top:10px;" class="qual-note">Primary buyer: COO, shared services and process owners; increasingly CIO for orchestration</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Use cases &amp; reported metrics</h2></div>
+    <div class="sec-note">All impact figures below are vendor- or partner-reported and have not been independently audited.</div>
+    <div class="uc-grid">
+      <a class="uc-card" href="https://ir.uipath.com/news/detail/431/uipath-reports-fourth-quarter-and-full-year-fiscal-2026-financial-results" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Platform positioning</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">Deterministic automation, agentic AI and enterprise orchestration brought together on a single governed platform, with tools for building and testing agents and expanded built-in security and governance introduced at FUSION.</div>
+        <div class="uc-metric">ARR of $1.853B at FY2026 close, up 11%, with GAAP operating income of $80M and non-GAAP operating income of $150M</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://natlawreview.com/press-releases/uipath-reports-fourth-quarter-and-full-year-fiscal-2026-financial-results" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Healthcare</span><span class="uc-status">Announced</span></div>
+        <div class="uc-deploy">Agentic AI solutions for healthcare providers and payers covering medical records summarisation, claim denial prevention and resolution, and prior authorisation, using purpose-built, compliant and governed agents.</div>
+        <div class="uc-metric">Targets revenue cycle management — a high-volume, compliance-bound process where deterministic execution matters</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://ir.uipath.com/news/detail/404/uipath-reports-second-quarter-fiscal-2026-financial-results" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">ERP modernisation</span><span class="uc-status">Deployed</span></div>
+        <div class="uc-deploy">UiPath's own migration to SAP S/4HANA, delivered with Deloitte, using agentic automation to modernise its internal ERP.</div>
+        <div class="uc-metric">93% clean core in solution design and 88% clean core across the overall implementation</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+      <a class="uc-card" href="https://www.businesswire.com/news/home/20260311599358/en/UiPath-Reports-Fourth-Quarter-and-Full-Year-Fiscal-2026-Financial-Results" target="_blank" rel="noopener">
+        <div class="uc-top"><span class="uc-sector">Financial crime compliance</span><span class="uc-status">Announced</span></div>
+        <div class="uc-deploy">Acquisition of WorkFusion, a pioneer in AI agents for financial crime compliance, extending the platform into a regulated, audit-heavy domain.</div>
+        <div class="uc-metric">Announced alongside a new $500M share repurchase authorisation following completion of a $1B programme</div>
+        <div class="uc-src">Source ↗</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Competitive landscape</h2></div>
+    <table class="comp-table">
+      <thead><tr><th style="width:28%;">Vendor</th><th style="width:44%;">Category</th><th>Revenue (latest/est.)</th></tr></thead>
+      <tbody><tr><td class="mname"><a href="salesforce-dashboard.html">Salesforce</a></td><td>CRM, data platform &amp; agentic AI</td><td>$41.5B (FY26)</td></tr><tr><td class="mname"><a href="servicenow-dashboard.html">ServiceNow</a></td><td>Workflow platform &amp; AI control tower</td><td>$15.8B (FY26 guide)</td></tr>
+      </tbody>
+    </table>
+    <div class="sec-note" style="margin-top:12px;">Only 2 directly comparable vendors is currently tracked in this app, so this table understates the real competitive field. See <b>Where it sits</b> below for the wider market position.</div>
+    <div class="position-note"><b>Where it sits:</b> The distinction UiPath draws is worth taking seriously for infrastructure operations: deterministic automation does the same thing every time, agentic AI adapts, and mission-critical processes often need the former with the latter layered on selectively. Regulated or safety-relevant workflows at a PortCo are exactly where that matters — you do not want a probabilistic system executing a compliance step. UiPath's own S/4HANA migration with Deloitte, which reached 93% clean core in solution design and 88% overall, is a useful reference because it is the vendor eating its own cooking on an ERP migration. The commercial reality check is growth: 11% ARR growth is the slowest of any software vendor tracked in this app.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>GIP &amp; BlackRock connections</h2></div>
+    <div class="sec-note">Global Infrastructure Partners (GIP) became a wholly-owned BlackRock subsidiary in October 2024 and now operates as BlackRock's dedicated infrastructure-investment arm. Ownership stakes below are standard institutional/index-fund positions unless otherwise noted — that is a capital-markets fact, not evidence of an operating relationship.</div>
+    <table class="scale-table">
+      <thead><tr><th style="width:22%;">Entity</th><th>Possible connection</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Global Infrastructure Partners</td><td>No publicly disclosed GIP relationship. Most relevant to the Corporate Functions Efficiency area of the reference model — back-office and shared-services process automation — and potentially to compliance-heavy workflows where deterministic execution is a requirement rather than a preference.</td></tr>
+        <tr><td class="name">BlackRock</td><td>No publicly disclosed operating relationship; standard index holdings of PATH only.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Sentiment</h2></div>
+
+    <div class="subhead">Customer sentiment</div>
+    <div class="qual-note" style="margin-bottom:18px;">Dines reports that customers consistently say automation and agentic AI are stronger together, and that enterprises want a unified platform rather than standalone tools. That framing is consistent with the numbers — steady, unspectacular ARR growth from an installed base moving beyond pilots into production. Net new ARR of $31M in Q2 FY2026 is the uncomfortable detail: expansion is happening, but slowly.</div>
+
+    <div class="subhead">Market &amp; analyst sentiment</div>
+    <div class="sent-grid">
+      <div class="sent-col bull">
+        <div class="sent-head">What supports the story</div>
+        <ul><li>Profitable on both a GAAP and non-GAAP basis, which is rare among AI-positioned software vendors at this scale</li><li>The deterministic-plus-agentic argument is genuinely differentiated and matters in regulated or safety-relevant processes</li><li>Completed a $1B buyback and authorised a further $500M — a capital-return posture, not a cash-burn one</li><li>Industry-specific agentic solutions (healthcare, financial crime) rather than horizontal claims</li></ul>
+      </div>
+      <div class="sent-col bear">
+        <div class="sent-head">What to pressure-test</div>
+        <ul><li>ARR growth of 11% is the slowest of any software vendor tracked in this app, and it was flat at 11–12% across all four quarters</li><li>Net new ARR of $31M in a single quarter is small against a $1.7B base</li><li>RPA is the category most directly threatened by general-purpose agents — the repositioning is necessary, not opportunistic</li><li>Competes with Microsoft, Salesforce, ServiceNow and SAP, all of which bundle automation into platforms customers already own</li><li>Headcount is not disclosed in the results reviewed, limiting any read on delivery capacity</li></ul>
+      </div>
+    </div>
+
+    <div class="subhead">Employee sentiment</div>
+    <div class="qual-note">Not covered in this pass — headcount was not disclosed and no employer-review data was gathered. One leadership signal: CTO Raghu Malpani took on an expanded role as Chief Product and Technology Officer, consolidating product and engineering under a single leader reporting to Dines.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">06</span><h2>GIP engagement</h2></div>
+    <div class="sec-note">Live from your tracker workbook. Nothing here is published or uploaded.</div>
+    <div id="gip-loadbar" class="loadbar">Reading gip-tracker.xlsx…</div>
+    <div class="gip-panel" id="gip-panel" data-vendor="UiPath"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">07</span><h2>Contacts</h2></div>
+    <div class="sec-note">Each card opens that person's dashboard, which links to their downloadable
+    white paper. <a href="people.html?vendor=uipath" style="color:var(--steel);">All UiPath contacts &rarr;</a>
+    &nbsp;·&nbsp; <a href="people.html" style="color:var(--steel);">All contacts across every vendor &rarr;</a></div>
+    <div class="card-grid" id="gip-people"></div>
+    <div id="nopeople" class="empty" style="display:none;"><b>No contacts on file</b>Add rows for UiPath on the People sheet.</div>
+  </section>
+
+  <footer>
+    <b>Sources:</b> UiPath public filings/website, company fact sheets, Wikipedia, PitchBook/Crunchbase/Datanyze/BuiltIn company profiles, Glassdoor employer reviews, vendor case studies and press releases, SEC Schedule 13D/13G/13F filings, and BlackRock/GIP corporate disclosures, as of September 2026. Figures marked “est.” or “not disclosed” are third-party estimates or unavailable, not company-confirmed — validate in diligence.<br>
+    Part of the <a href="market-overview.html" style="color:var(--steel);">Physical AI / Industrial AI for Critical Infrastructure market landscape</a>.
+  </footer>
+
+</div>
+<script src="xlsx.full.min.js"></script>
+<script src="gip-loader.js"></script>
+<script src="app-data.js"></script>
+<script src="gip-panel.js"></script>
+</body>
+</html>
